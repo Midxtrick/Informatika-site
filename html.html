@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTML Практикум — обучение с нуля</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface-2: #0b1220;
+      --border: #334155;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --success: #22c55e;
+      --error: #ef4444;
+      --warning: #f59e0b;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Навигация */
+    header {
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-container {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 20px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .logo span {
+      background: var(--accent);
+      color: #082f49;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+    }
+
+    nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--muted);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover {
+      color: var(--text);
+      background: var(--surface);
+    }
+
+    .nav-btn.active {
+      color: var(--text);
+      background: var(--surface);
+      border-color: var(--accent);
+    }
+
+    /* Основной контент */
+    main {
+      max-width: 1060px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+      flex: 1;
+    }
+
+    .page {
+      display: none;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Главная */
+    .hero {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px 32px;
+      margin-bottom: 28px;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.7rem, 4vw, 2.4rem);
+      margin-bottom: 12px;
+      line-height: 1.25;
+    }
+
+    .hero p {
+      color: var(--muted);
+      max-width: 680px;
+      margin-bottom: 24px;
+      font-size: 1.05rem;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      background: var(--accent);
+      color: #082f49;
+      border: none;
+      padding: 11px 20px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: #273549;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+    }
+
+    .card h3 {
+      margin-bottom: 8px;
+      font-size: 1.15rem;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 14px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    /* Блок фактов */
+    .facts-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+
+    .facts-section h2 {
+      margin-bottom: 16px;
+      font-size: 1.35rem;
+    }
+
+    .facts-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .fact-item {
+      background: var(--surface-2);
+      border-left: 3px solid var(--warning);
+      padding: 14px 16px;
+      border-radius: 8px;
+      font-size: 0.93rem;
+      color: #e2e8f0;
+    }
+
+    /* Теория */
+    .lesson {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 22px;
+    }
+
+    .lesson h2 {
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+      color: var(--accent);
+    }
+
+    .lesson p {
+      color: #cbd5e1;
+      margin-bottom: 14px;
+    }
+
+    pre {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.9rem;
+      color: #7dd3fc;
+      margin-bottom: 12px;
+    }
+
+    .preview-box {
+      background: #ffffff;
+      color: #0f172a;
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 0.95rem;
+    }
+
+    .preview-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    /* Задачи */
+    .task-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    @media (max-width: 780px) {
+      .task-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .task-list {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .task-item-btn {
+      text-align: left;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.92rem;
+      transition: all 0.2s;
+    }
+
+    .task-item-btn:hover {
+      border-color: var(--accent);
+    }
+
+    .task-item-btn.active {
+      background: rgba(56, 189, 248, 0.14);
+      border-color: var(--accent);
+    }
+
+    .status-dot {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .status-dot.done {
+      color: var(--success);
+    }
+
+    .workspace {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+
+    .workspace h2 {
+      margin-bottom: 8px;
+      font-size: 1.3rem;
+    }
+
+    .task-desc {
+      color: #cbd5e1;
+      margin-bottom: 16px;
+    }
+
+    textarea.code-editor {
+      width: 100%;
+      min-height: 165px;
+      background: var(--surface-2);
+      color: #e2e8f0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.92rem;
+      line-height: 1.5;
+      resize: vertical;
+      margin-bottom: 14px;
+    }
+
+    textarea.code-editor:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .feedback {
+      margin-top: 14px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 0.93rem;
+      display: none;
+    }
+
+    .feedback.show {
+      display: block;
+    }
+
+    .feedback.ok {
+      background: rgba(34, 197, 94, 0.14);
+      border: 1px solid var(--success);
+      color: #86efac;
+    }
+
+    .feedback.err {
+      background: rgba(239, 68, 68, 0.14);
+      border: 1px solid var(--error);
+      color: #fca5a5;
+    }
+
+    .feedback.hint {
+      background: rgba(245, 158, 11, 0.14);
+      border: 1px solid var(--warning);
+      color: #fcd34d;
+    }
+
+    .live-preview-wrap {
+      margin-top: 20px;
+    }
+
+    iframe.live-frame {
+      width: 100%;
+      min-height: 130px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a class="logo" onclick="openPage('home')">
+        <span>HTML</span> Практикум
+      </a>
+      <nav aria-label="Главное меню">
+        <button class="nav-btn active" data-page="home" onclick="openPage('home')">Главная</button>
+        <button class="nav-btn" data-page="theory" onclick="openPage('theory')">Теория</button>
+        <button class="nav-btn" data-page="tasks" onclick="openPage('tasks')">Задачи</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- СТРАНИЦА 1: ГЛАВНАЯ + ФАКТЫ -->
+    <section id="page-home" class="page active">
+      <div class="hero">
+        <div class="badge">Интерактивный курс</div>
+        <h1>Изучайте HTML через практику и понятные примеры</h1>
+        <p>
+          Переключайтесь между тремя страницами сайта: читайте конспект в разделе «Теория»,
+          запоминайте интересные факты об HTML и решайте задачи с мгновенной проверкой кода.
+        </p>
+        <div class="btn-group">
+          <button class="btn" onclick="openPage('theory')">Перейти к теории</button>
+          <button class="btn btn-secondary" onclick="openPage('tasks')">Решать задачи</button>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <span class="badge">Страница 1</span>
+          <h3>Главная и факты</h3>
+          <p>Быстрый старт, обзор возможностей курса и подборка полезных фактов о разметке веб-страниц.</p>
+          <button class="btn btn-secondary" onclick="scrollToFacts()">Смотреть факты</button>
+        </div>
+        <div class="card">
+          <span class="badge">Страница 2</span>
+          <h3>Теория HTML</h3>
+          <p>Базовые теги заголовков, абзацев, списков, ссылок, изображений и форм с живым отображением.</p>
+          <button class="btn btn-secondary" onclick="openPage('theory')">Открыть уроки</button>
+        </div>
+        <div class="card">
+          <span class="badge">Страница 3</span>
+          <h3>Практические задачи</h3>
+          <p>5 заданий от простого к сложному: пишите HTML-код, смотрите предпросмотр и проверяйте результат.</p>
+          <button class="btn btn-secondary" onclick="openPage('tasks')">Начать практику</button>
+        </div>
+      </div>
+
+      <div id="facts-block" class="facts-section">
+        <h2>Факты об HTML</h2>
+        <div class="facts-list">
+          <div class="fact-item">
+            <strong>HTML — не язык программирования.</strong> Это язык разметки (HyperText Markup Language), который задаёт структуру документа, а не логику вычислений.
+          </div>
+          <div class="fact-item">
+            <strong>Первый сайт появился в 1991 году.</strong> Тим Бернерс-Ли создал его в ЦЕРНе, чтобы учёные могли обмениваться документами по гиперссылкам.
+          </div>
+          <div class="fact-item">
+            <strong>Браузер прощает многие ошибки.</strong> Если забыть закрывающий тег у простого абзаца, браузер часто всё равно отобразит страницу, но валидный код надёжнее.
+          </div>
+          <div class="fact-item">
+            <strong>HTML5 вышел в 2014 году.</strong> Он добавил семантические теги (<code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;article&gt;</code>) и встроенную поддержку аудио/видео.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- СТРАНИЦА 2: ТЕОРИЯ -->
+    <section id="page-theory" class="page">
+      <h1 style="margin-bottom: 8px;">Теория HTML</h1>
+      <p style="color: var(--muted); margin-bottom: 24px;">
+        Изучите основные строительные блоки веб-страницы, а затем закрепите их в разделе «Задачи».
+      </p>
+
+      <article class="lesson">
+        <h2>1. Заголовки и абзацы (&lt;h1&gt;–&lt;h6&gt;, &lt;p&gt;)</h2>
+        <p>
+          Теги заголовков обозначают важность раздела: <code>&lt;h1&gt;</code> — главный заголовок страницы,
+          <code>&lt;h2&gt;</code> — подзаголовок и так далее до <code>&lt;h6&gt;</code>. Обычный текст помещают в <code>&lt;p&gt;</code>.
+        </p>
+        <pre>&lt;h1&gt;Мой первый сайт&lt;/h1&gt;
+&lt;h2&gt;О проекте&lt;/h2&gt;
+&lt;p&gt;HTML помогает структурировать текст на странице.&lt;/p&gt;</pre>
+        <div class="preview-label">Результат в браузере</div>
+        <div class="preview-box">
+          <h1 style="font-size: 1.5rem; margin-bottom: 4px;">Мой первый сайт</h1>
+          <h2 style="font-size: 1.15rem; margin-bottom: 4px;">О проекте</h2>
+          <p>HTML помогает структурировать текст на странице.</p>
+        </div>
+      </article>
+
+      <article class="lesson">
+        <h2>2. Списки (&lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;)</h2>
+        <p>
+          Маркированный список создаётся тегом <code>&lt;ul&gt;</code>, нумерованный — <code>&lt;ol&gt;</code>.
+          Каждый элемент списка оборачивается в <code>&lt;li&gt;</code>.
+        </p>
+        <pre>&lt;ul&gt;
+  &lt;li&gt;Структура&lt;/li&gt;
+  &lt;li&gt;Стили (CSS)&lt;/li&gt;
+  &lt;li&gt;Интерактивность (JS)&lt;/li&gt;
+&lt;/ul&gt;</pre>
+        <div class="preview-label">Результат в браузере</div>
+        <div class="preview-box">
+          <ul style="padding-left: 20px;">
+            <li>Структура</li>
+            <li>Стили (CSS)</li>
+            <li>Интерактивность (JS)</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="lesson">
+        <h2>3. Ссылки и выделение текста (&lt;a&gt;, &lt;strong&gt;, &lt;em&gt;)</h2>
+        <p>
+          Ссылка создаётся тегом <code>&lt;a href="..."&gt;</code>. Для важного текста используют <code>&lt;strong&gt;</code>,
+          а для логического акцента (обычно курсивом) — <code>&lt;em&gt;</code>.
+        </p>
+        <pre>&lt;p&gt;Узнайте больше на &lt;a href="https://developer.mozilla.org"&gt;MDN Web Docs&lt;/a&gt; — это &lt;strong&gt;очень&lt;/strong&gt; полезный ресурс.&lt;/p&gt;</pre>
+        <div class="preview-label">Результат в браузере</div>
+        <div class="preview-box">
+          <p>Узнайте больше на <a href="https://developer.mozilla.org" target="_blank" rel="noopener">MDN Web Docs</a> — это <strong>очень</strong> полезный ресурс.</p>
+        </div>
+      </article>
+
+      <article class="lesson">
+        <h2>4. Кнопки и поля ввода (&lt;button&gt;, &lt;input&gt;)</h2>
+        <p>
+          Интерактивные элементы позволяют пользователю отправлять данные или запускать действия.
+          У <code>&lt;input&gt;</code> есть атрибут <code>type</code> (например, <code>text</code> или <code>email</code>) и <code>placeholder</code>.
+        </p>
+        <pre>&lt;input type="email" placeholder="Введите ваш e-mail" /&gt;
+&lt;button type="button"&gt;Подписаться&lt;/button&gt;</pre>
+        <div class="preview-label">Результат в браузере</div>
+        <div class="preview-box">
+          <input type="email" placeholder="Введите ваш e-mail" style="padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 6px;" />
+          <button type="button" style="padding: 6px 12px; border: none; background: #0284c7; color: #fff; border-radius: 6px; cursor: pointer;">Подписаться</button>
+        </div>
+      </article>
+
+      <div class="btn-group">
+        <button class="btn" onclick="openPage('tasks')">Перейти к решению задач →</button>
+      </div>
+    </section>
+
+    <!-- СТРАНИЦА 3: ЗАДАЧИ -->
+    <section id="page-tasks" class="page">
+      <h1 style="margin-bottom: 8px;">Задачи для практики</h1>
+      <p style="color: var(--muted); margin-bottom: 22px;">
+        Выберите задачу слева, напишите HTML-код в редакторе и нажмите «Проверить решение».
+      </p>
+
+      <div class="task-layout">
+        <aside class="task-list" id="task-list"></aside>
+
+        <div class="workspace">
+          <div class="badge" id="task-level">Уровень 1</div>
+          <h2 id="task-title">Загрузка...</h2>
+          <p class="task-desc" id="task-desc"></p>
+
+          <textarea id="code-editor" class="code-editor" spellcheck="false" oninput="updatePreview()"></textarea>
+
+          <div class="btn-group">
+            <button class="btn" onclick="checkTask()">Проверить решение</button>
+            <button class="btn btn-secondary" onclick="showHint()">Подсказка</button>
+            <button class="btn btn-secondary" onclick="resetTask()">Сбросить шаблон</button>
+          </div>
+
+          <div id="feedback" class="feedback"></div>
+
+          <div class="live-preview-wrap">
+            <div class="preview-label">Живой предпросмотр</div>
+            <iframe id="live-frame" class="live-frame" sandbox="allow-same-origin"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    HTML Практикум • 3 страницы: Главная (и факты), Теория, Задачи
+  </footer>
+
+  <script>
+    const tasks = [
+      {
+        id: 1,
+        level: "Базовый • Теги заголовка и абзаца",
+        title: "Задача 1. Заголовок и приветствие",
+        desc: "Создайте главный заголовок <h1> с текстом «Привет, мир!» и абзац <p> со словом «HTML» внутри.",
+        starter: "<!-- Напишите ваш код здесь -->\n",
+        hint: "Используйте теги <h1>Привет, мир!</h1> и <p>... HTML ...</p>.",
+        validate(code) {
+          const doc = new DOMParser().parseFromString(code, "text/html");
+          const h1 = doc.querySelector("h1");
+          const p = doc.querySelector("p");
+          if (!h1 || !h1.textContent.toLowerCase().includes("привет, мир")) {
+            return "Нужен тег <h1> с текстом «Привет, мир!».";
+          }
+          if (!p || !p.textContent.toLowerCase().includes("html")) {
+            return "Добавьте абзац <p>, содержащий слово «HTML».";
+          }
+          return null;
+        }
+      },
+      {
+        id: 2,
+        level: "Базовый • Маркированный список",
+        title: "Задача 2. Список из 3 пунктов",
+        desc: "Создайте маркированный список <ul> ровно с тремя элементами <li>.",
+        starter: "<ul>\n  \n</ul>",
+        hint: "Внутри <ul> разместите три тега <li>...</li>.",
+        validate(code) {
+          const doc = new DOMParser().parseFromString(code, "text/html");
+          const items = doc.querySelectorAll("ul > li");
+          if (items.length !== 3) {
+            return
