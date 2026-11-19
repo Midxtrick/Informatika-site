@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTML Лаборатория — фиолетовый практикум</title>
+  <style>
+    :root {
+      --bg: #0d0718;
+      --bg-grad: radial-gradient(circle at 15% 10%, rgba(168, 85, 247, 0.24), transparent 42%),
+                 radial-gradient(circle at 85% 20%, rgba(236, 72, 153, 0.16), transparent 45%),
+                 radial-gradient(circle at 50% 95%, rgba(124, 58, 237, 0.2), transparent 50%),
+                 #0d0718;
+      --surface: rgba(29, 16, 54, 0.86);
+      --surface-2: #140b26;
+      --border: rgba(192, 132, 252, 0.25);
+      --border-strong: rgba(192, 132, 252, 0.6);
+      --text: #f8f5ff;
+      --muted: #c4b5fd;
+      --accent: #a855f7;
+      --accent-2: #e879f9;
+      --accent-hover: #c084fc;
+      --success: #34d399;
+      --error: #fb7185;
+      --warning: #fbbf24;
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg-grad);
+      background-attachment: fixed;
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Шапка и меню */
+    header {
+      background: rgba(15, 8, 28, 0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .logo-badge {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      padding: 3px 10px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      box-shadow: 0 0 18px rgba(168, 85, 247, 0.55);
+    }
+
+    nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .nav-btn {
+      background: rgba(168, 85, 247, 0.08);
+      border: 1px solid transparent;
+      color: var(--muted);
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn:hover {
+      color: var(--text);
+      background: rgba(168, 85, 247, 0.18);
+      border-color: var(--border);
+    }
+
+    .nav-btn.active {
+      color: #fff;
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.35), rgba(232, 121, 249, 0.25));
+      border-color: var(--accent-hover);
+      box-shadow: 0 0 16px rgba(168, 85, 247, 0.35);
+    }
+
+    .nav-progress-pill {
+      background: var(--surface-2);
+      border: 1px solid var(--border-strong);
+      color: var(--accent-2);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.84rem;
+      font-weight: 700;
+    }
+
+    /* Контейнер */
+    main {
+      max-width: 1120px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 28px 20px 64px;
+      flex: 1;
+    }
+
+    .page {
+      display: none;
+      animation: popIn 0.28s ease;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Общий прогресс-бар */
+    .global-progress {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .progress-track {
+      flex: 1;
+      min-width: 200px;
+      height: 12px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 14px rgba(232, 121, 249, 0.7);
+      transition: width 0.35s ease;
+    }
+
+    /* Кнопки и гиперссылки */
+    .btn {
+      background: linear-gradient(135deg, var(--accent), #9333ea);
+      color: #fff;
+      border: none;
+      padding: 11px 20px;
+      border-radius: 11px;
+      font-weight: 700;
+      font-size: 0.93rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 18px rgba(168, 85, 247, 0.38);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(192, 132, 252, 0.55);
+    }
+
+    .btn-secondary {
+      background: rgba(168, 85, 247, 0.12);
+      color: var(--text);
+      border: 1px solid var(--border-strong);
+      box-shadow: none;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(168, 85, 247, 0.24);
+      box-shadow: none;
+    }
+
+    .btn-sm {
+      padding: 7px 13px;
+      font-size: 0.84rem;
+      border-radius: 9px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    a.hyper-link {
+      color: var(--accent-2);
+      text-decoration: none;
+      font-weight: 600;
+      border-bottom: 1px dashed rgba(232, 121, 249, 0.6);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    a.hyper-link:hover {
+      color: #fff;
+      border-bottom-style: solid;
+    }
+
+    /* Страница 1: Введение */
+    .hero {
+      background: linear-gradient(135deg, rgba(88, 28, 135, 0.52), rgba(29, 16, 54, 0.92));
+      border: 1px solid var(--border-strong);
+      border-radius: 20px;
+      padding: 36px 32px;
+      margin-bottom: 24px;
+      box-shadow: 0 16px 40px rgba(88, 28, 135, 0.35);
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      padding: 4px 11px;
+      border-radius: 999px;
+      background: rgba(192, 132, 252, 0.2);
+      border: 1px solid var(--border);
+      color: var(--accent-2);
+      margin-bottom: 12px;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      line-height: 1.2;
+      margin-bottom: 12px;
+      background: linear-gradient(90deg, #ffffff, #e9d5ff, var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 1.04rem;
+      max-width: 760px;
+      margin-bottom: 20px;
+    }
+
+    .how-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .how-box h2 {
+      font-size: 1.32rem;
+      margin-bottom: 14px;
+      color: #fff;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .step-card {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .step-num {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--accent-2);
+      margin-bottom: 6px;
+    }
+
+    .deep-links-box {
+      background: linear-gradient(135deg, rgba(126, 34, 206, 0.25), rgba(20, 11, 38, 0.95));
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .deep-links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .link-card {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      transition: all 0.2s;
+    }
+
+    .link-card:hover {
+      border-color: var(--accent-hover);
+      transform: translateY(-2px);
+    }
+
+    .link-card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 6px;
+      color: #fff;
+    }
+
+    .link-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .next-step-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      background: var(--surface);
+      border: 1px solid var(--accent-hover);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+    }
+
+    /* Страница 2: Теория и разделы */
+    .section-filter {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    .filter-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-btn:hover {
+      color: #fff;
+      border-color: var(--accent-hover);
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .lesson {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      scroll-margin-top: 88px;
+    }
+
+    .lesson.focused {
+      border-color: var(--accent-2);
+      box-shadow: 0 0 24px rgba(232, 121, 249, 0.28);
+    }
+
+    .lesson-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .lesson h2 {
+      font-size: 1.25rem;
+      color: #f3e8ff;
+    }
+
+    .lesson p {
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    code {
+      background: rgba(168, 85, 247, 0.18);
+      color: #f5d0fe;
+      padding: 2px 6px;
+      border-radius: 5px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88em;
+    }
+
+    pre {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88rem;
+      color: #e9d5ff;
+      margin-bottom: 12px;
+    }
+
+    .preview-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent-2);
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .preview-box {
+      background: #ffffff;
+      color: #1e1b4b;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 0.94rem;
+    }
+
+    /* Страница 3: Практические задания */
+    .task-layout {
+      display: grid;
+      grid-template-columns: 310px 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    @media (max-width: 840px) {
+      .task-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .task-list {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .task-item-btn {
+      text-align: left;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+
+    .task-item-btn:hover {
+      border-color: var(--accent-hover);
+    }
+
+    .task-item-btn.active {
+      background: rgba(168, 85, 247, 0.22);
+      border-color: var(--accent-2);
+    }
+
+    .status-dot {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .status-dot.done {
+      color: var(--success);
+    }
+
+    .workspace {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+
+    .snippet-bar {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .snippet-btn {
+      background: var(--surface-2);
+      color: var(--accent-2);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 4px 9px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .snippet-btn:hover {
+      border-color: var(--accent-2);
+      background: rgba(168, 85, 247, 0.2);
+    }
+
+    textarea.code-editor {
+      width: 100%;
+      min-height: 170px;
+      background: var(--surface-2);
+      color: #f5d0fe;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.92rem;
+      line-height: 1.5;
+      resize: vertical;
+      margin-bottom: 14px;
+    }
+
+    textarea.code-editor:focus {
+      outline: none;
+      border-color: var(--accent-2);
+      box-shadow: 0 0 0 2px rgba(232, 121, 249, 0.2);
+    }
+
+    .feedback {
+      margin-top: 14px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 0.93rem;
+      display: none;
+    }
+
+    .feedback.show {
+      display: block;
+    }
+
+    .feedback.ok {
+      background: rgba(52, 211, 153, 0.14);
+      border: 1px solid var(--success);
+      color: #a7f3d0;
+    }
+
+    .feedback.err {
+      background: rgba(251, 113, 133, 0.14);
+      border: 1px solid var(--error);
+      color: #fecdd3;
+    }
+
+    .feedback.hint {
+      background: rgba(251, 191, 36, 0.14);
+      border: 1px solid var(--warning);
+      color: #fde68a;
+    }
+
+    .live-preview-wrap {
+      margin-top: 20px;
+    }
+
+    iframe.live-frame {
+      width: 100%;
+      min-height: 140px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.88rem;
+      background: rgba(15, 8, 28, 0.7);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a class="logo" onclick="openPage('intro')">
+        <span class="logo-badge">HTML</span> Фиолетовый практикум
+      </a>
+      <nav aria-label="Навигация по разделам">
+        <button class="nav-btn active" data-page="intro" onclick="openPage('intro')">1. Введение</button>
+        <button class="nav-btn" data-page="theory" onclick="openPage('theory')">Теория и разделы</button>
+        <button class="nav-btn" data-page="tasks" onclick="openPage('tasks')">Практические задания</button>
+        <span class="nav-progress-pill" id="nav-progress">Прогресс: 0%</span>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ОБЩИЙ ПРОГРЕСС -->
+    <div class="global-progress">
+      <div>
+        <strong id="progress-label">Прогресс обучения: 0 из 6 заданий (0%)</strong>
+        <div style="font-size: 0.84rem; color: var(--muted);">
+          Отмечено тем в теории: <span id="read-topics-count">0</span> из 4 • Автосохранение включено
+        </div>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="resetAllProgress()">Сбросить прогресс</button>
+    </div>
+
+    <!-- СТРАНИЦА 1: ВВЕДЕНИЕ ПРО HTML И КАК ОНО РАБОТАЕТ -->
+    <section id="page-intro" class="page active">
+      <div class="hero">
+        <span class="badge">Страница 1 • Введение в HTML</span>
+        <h1>Что такое HTML и как он работает в браузере</h1>
+        <p>
+          <strong>HTML</strong> (HyperText Markup Language) — это язык разметки, из которого собираются веб-страницы.
+          Он не выполняет сложную логику сам по себе, а сообщает браузеру, где заголовок, где абзац,
+          где ссылка, картинка, список или кнопка.
+        </p>
+        <div class="btn-group">
+          <button class="btn" onclick="openPage('tasks')">Перейти к заданию →</button>
+          <button class="btn btn-secondary" onclick="openPage('theory')">Открыть разделы теории</button>
+        </div>
+      </div>
+
+      <div class="how-box">
+        <h2>Как это работает шаг за шагом</h2>
+        <p style="color: var(--muted);">
+          Когда вы открываете сайт, браузер получает HTML-файл, читает его сверху вниз и строит дерево элементов (DOM),
+          после чего рисует страницу на экране.
+        </p>
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-num">ШАГ 1 • ЗАПРОС</div>
+            <p style="font-size: 0.92rem; color: var(--muted);">
+              Вы вводите адрес или нажимаете ссылку — браузер запрашивает HTML-документ у сервера.
+            </p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">ШАГ 2 • РАЗБОР ТЕГОВ</div>
+            <p style="font-size: 0.92rem; color: var(--muted);">
+              Браузер распознаёт теги вроде <code>&lt;h1&gt;</code>, <code>&lt;p&gt;</code> и <code>&lt;a&gt;</code> и понимает структуру текста.
+            </p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">ШАГ 3 • ПОДКЛЮЧЕНИЕ CSS И JS</div>
+            <p style="font-size: 0.92rem; color: var(--muted);">
+              По ссылкам из HTML подгружаются стили CSS (цвета, шрифты, сетки) и скрипты для интерактива.
+            </p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">ШАГ 4 • ОТРИСОВКА</div>
+            <p style="font-size: 0.92rem; color: var(--muted);">
+              Экран заполняется готовыми блоками, которые можно читать, прокручивать и кликать.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="deep-links-box">
+        <span class="badge">Гиперссылки на подробные материалы</span>
+        <h2 style="font-size: 1.32rem; margin-bottom: 6px;">Узнайте подробнее о ключевых частях веб-страницы</h2>
+        <p style="color: var(--muted); font-size: 0.94rem;">
+          Нажмите на любую гиперссылку ниже, чтобы перейти в нужный тематический раздел:
+        </p>
+        <div class="deep-links-grid">
+          <div class="link-card">
+            <h3>Теги HTML</h3>
+            <p>Угловые скобки, парные и одиночные теги, заголовки, списки и абзацы.</p>
+            <a class="hyper-link" onclick="jumpToTopic('topic-tags')">Подробнее о тегах →</a>
+          </div>
+          <div class="link-card">
+            <h3>Атрибуты HTML</h3>
+            <p>Дополнительные настройки внутри открывающего тега: <code>href</code>, <code>placeholder</code>, <code>type</code>.</p>
+            <a class="hyper-link" onclick="jumpToTopic('topic-attrs')">Подробнее об атрибутах →</a>
+          </div>
+          <div class="link-card">
+            <h3>Как HTML работает с CSS</h3>
+            <p>Разделение структуры (HTML) и оформления (CSS): цвета, отступы, рамки и эффекты.</p>
+            <a class="hyper-link" onclick="jumpToTopic('topic-css')">Подробнее о связи с CSS →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="next-step-bar">
+        <div>
+          <strong style="font-size: 1.05rem;">Готовы закрепить введение на практике?</strong>
+          <div style="color: var(--muted); font-size: 0.9rem;">
+            На следующей странице вас ждёт задание и кнопка «Следующий шаг».
+          </div>
+        </div>
+        <button class="btn" onclick="openPage('tasks')">Следующий шаг: задание →</button>
+      </div>
+    </section>
+
+    <!-- СТРАНИЦА 2: ТЕОРИЯ И РАЗДЕЛЫ С РАЗНЫМИ ТЕМАМИ -->
+    <section id="page-theory" class="page">
+      <span class="badge">Страница 2 • Теория и разделы по темам</span>
+      <h1 style="font-size: 1.9rem; margin-bottom: 8px;">Разделы и темы обучения</h1>
+      <p style="color: var(--muted); margin-bottom: 18px;">
+        Выберите тему через фильтры ниже или отметьте материал как изученный, чтобы двигаться к заданиям.
+      </p>
+
+      <div class="section-filter" role="tablist" aria-label="Фильтр тем">
+        <button class="filter-btn active" onclick="filterTopics('all', this)">Все темы (4)</button>
+        <button class="filter-btn" onclick="filterTopics('tags', this)">Теги</button>
+        <button class="filter-btn" onclick="filterTopics('attrs', this)">Атрибуты</button>
+        <button class="filter-btn" onclick="filterTopics('css', this)">Связь с CSS</button>
+        <button class="filter-btn" onclick="filterTopics('lists', this)">Списки и структура</button>
+      </div>
+
+      <article id="topic-tags" class="lesson" data-topic="tags">
+        <div class="lesson-top">
+          <h2>Тема 1. Теги HTML: заголовки, абзацы и акценты</h2>
+          <div class="btn-group">
+            <button class="btn btn-secondary btn-sm" onclick="markTopicRead('tags', this)">Отметить изученным</button>
+            <button class="btn btn-secondary btn-sm" onclick="copyCode(this, 'code-tags')">Копировать</button>
+          </div>
+        </div>
+        <p>
+          <strong>Тег</strong> — это команда разметки в угловых скобках. Большинство тегов парные: открывающий
+          <code>&lt;p&gt;</code> и закрывающий <code>&lt;/p&gt;</code>. Заголовки задаются тегами
+          <code>&lt;h1&gt;</code>–<code>&lt;h6&gt;</code>, а важное слово выделяют через <code>&lt;strong&gt;</code>.
+        </p>
+        <pre id="code-tags">&lt;h1&gt;Мир фиолетового веба&lt;/h1&gt;
+&lt;p&gt;HTML задаёт &lt;strong&gt;структуру&lt;/strong&gt; каждой страницы.&lt;/p&gt;</pre>
+        <div class="preview-label">Живой вид</div>
+        <div class="preview-box">
+          <h1 style="font-size: 1.4rem; margin-bottom: 4px;">Мир фиолетового веба</h1>
+          <p>HTML задаёт <strong>структуру</strong> каждой страницы.</p>
+        </div>
+      </article>
+
+      <article id="topic-attrs" class="lesson" data-topic="attrs">
+        <div class="lesson-top">
+          <h2>Тема 2. Атрибуты HTML: ссылки, подсказки и поля ввода</h2>
+          <div class="btn-group">
+            <button class="btn btn-secondary btn-sm" onclick="markTopicRead('attrs', this)">Отметить изученным</button>
+            <button class="btn btn-secondary btn-sm" onclick="copyCode(this, 'code-attrs')">Копировать</button>
+          </div>
+        </div>
+        <p>
+          <strong>Атрибут</strong> записывается внутри открывающего тега как <code>имя="значение"</code> и уточняет его поведение.
+          Например, у ссылки <code>&lt;a&gt;</code> атрибут <code>href</code> указывает адрес перехода, а у <code>&lt;input&gt;</code>
+          атрибут <code>placeholder</code> задаёт текст-подсказку.
+        </p>
+        <pre id="code-attrs">&lt;a href="#topic-css"&gt;Перейти к теме CSS&lt;/a&gt;
+&lt;input type="text" placeholder="Ваше имя" /&gt;</pre>
+        <div class="preview-label">Живой вид</div>
+        <div class="preview-box">
+          <a href="#topic-css" style="color: #7e22ce; font-weight: 600;">Перейти к теме CSS</a>
+          <span style="margin: 0 8px;">|</span>
+          <input type="text" placeholder="Ваше имя" style="padding: 5px 9px; border: 1px solid #c4b5fd; border-radius: 6px;" />
+        </div>
+      </article>
+
+      <article id="topic-css" class="lesson" data-topic="css">
+        <div class="lesson-top">
+          <h2>Тема 3. Как HTML работает вместе с CSS</h2>
+          <div class="btn-group">
+            <button class="btn btn-secondary btn-sm" onclick="markTopicRead('css', this)">Отметить изученным</button>
+            <button class="btn btn-secondary btn-sm" onclick="copyCode(this, 'code-css')">Копировать</button>
+          </div>
+        </div>
+        <p>
+          HTML отвечает за смысл и каркас элементов, а <strong>CSS</strong> (Cascading Style Sheets) — за их внешний вид:
+          фиолетовые градиенты, скругления, тени и расположение. Связь часто идёт через классы (<code>class</code>) или теги.
+        </p>
+        <pre id="code-css">&lt;div class="violet-card"&gt;
+  &lt;p&gt;HTML создаёт блок, а CSS красит его в фиолетовый.&lt;/p&gt;
+&lt;/div&gt;</pre>
+        <div class="preview-label">Живой вид</div>
+        <div class="preview-box">
+          <div style="background: linear-gradient(135deg, #7e22ce, #c026d3); color: #fff; padding: 12px 16px; border-radius: 10px;">
+            HTML создаёт блок, а CSS красит его в фиолетовый.
+          </div>
+        </div>
+      </article>
+
+      <article id="topic-lists" class="lesson" data-topic="lists">
+        <div class="lesson-top">
+          <h2>Тема 4. Списки и кнопки действий (&lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;, &lt;button&gt;)</h2>
+          <div class="btn-group">
+            <button class="btn btn-secondary btn-sm" onclick="markTopicRead('lists', this)">Отметить изученным</button>
+            <button class="btn btn-secondary btn-sm" onclick="copyCode(this, 'code-lists')">Копировать</button>
+          </div>
+        </div>
+        <p>
+          Маркированные списки создаются тегом <code>&lt;ul&gt;</code>, а каждый элемент списка — тегом <code>&lt;li&gt;</code>.
+          Кнопки добавляются тегом <code>&lt;button&gt;</code>.
+        </p>
+        <pre id="code-lists">&lt;ul&gt;
+  &lt;li&gt;Первый пункт&lt;/li&gt;
+  &lt;li&gt;Второй пункт&lt;/li&gt;
+&lt;/ul&gt;
+&lt;button type="button"&gt;Нажать&lt;/button&gt;</pre>
+        <div class="preview-label">Живой вид</div>
+        <div class="preview-box">
+          <ul style="padding-left: 20px; margin-bottom: 10px;">
+            <li>Первый пункт</li>
+            <li>Второй пункт</li>
+          </ul>
+          <button type="button" style="background: #7e22ce; color: #fff; border: none; padding: 6px 14px; border-radius: 7px; cursor: pointer;">Нажать</button>
+        </div>
+      </article>
+
+      <div class="next-step-bar">
+        <div>
+          <strong>Теория изучена?</strong>
+          <div style="color: var(--muted); font-size: 0.9rem;">Переходите к практическим заданиям и проверьте свой код.</div>
+        </div>
+        <button class="btn" onclick="openPage('tasks')">Следующий шаг: задания →</button>
+      </div>
+    </section>
+
+    <!-- СТРАНИЦА 3: ПРАКТИЧЕСКИЕ ЗАДАНИЯ -->
+    <section id="page-tasks" class="page">
+      <span class="badge">Страница 3 • Практические задания</span>
+      <h1 style="font-size: 1.9rem; margin-bottom: 8px;">Задание и практика HTML</h1>
+      <p style="color: var(--muted); margin-bottom: 20px;">
+        Выполните задание в редакторе, нажмите «Проверить решение», а затем воспользуйтесь кнопкой «Следующий шаг».
+      </p>
+
+      <div class="task-layout">
+        <aside class="task-list" id="task-list"></aside>
+
+        <div class="workspace">
+          <div class="badge" id="task-topic-badge">Тема</div>
+          <h2 id="task-title" style="margin-bottom: 8px;">Задание</h2>
+          <p id="task-desc" style="color: var(--muted); margin-bottom: 12px;"></p>
+
+          <div class="preview-label">Быстрая вставка тегов</div>
+          <div class="snippet-bar">
+            <button type="button" class="snippet-btn" onclick="insertSnippet('<h1></h1>')">&lt;h1&gt;</button>
+            <button type="button" class="snippet-btn" onclick="insertSnippet('<p></p>')">&lt;p&gt;</button>
+            <button type="button" class="snippet-btn" onclick="insertSnippet('<strong></strong>')">&lt;strong&gt;</button>
+            <button type="button" class="snippet-btn" onclick="insertSnippet('<a href=\"#\"></a>')">&lt;a&gt;</button>
+            <button type="button" class="snippet-btn" onclick="insertSnippet('<input placeholder=\"\">')">&lt;input&gt;</button>
+            <button type="button" class="snippet-btn" onclick="insertSnippet('<ul>\n  <li></li>\n</ul>')">&lt;ul&gt;</button>
+            <button type="button" class="snippet-btn" onclick="insertSnippet('<button></button>')">&lt;button&gt;</button>
+          </div>
+
+          <textarea id="code-editor" class="code-editor" spellcheck="false" oninput="updatePreview()"></textarea>
+
+          <div class="btn-group">
+            <button class="btn" onclick="checkTask()">Проверить решение</button>
+            <button class="btn btn-secondary" onclick="showHint()">Подсказка</button>
+            <button class="btn btn-secondary" onclick="resetTask()">Сбросить код</button>
+            <button id="next-step-btn" class="btn" onclick="nextStepAction()">Следующий шаг →</button>
+          </div>
+
+          <div id="feedback" class="feedback"></div>
+
+          <div class="live-preview-wrap">
+            <div class="preview-label">Живой предпросмотр</div>
+            <iframe id="live-frame" class="live-frame" sandbox="allow-same-origin"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    HTML Фиолетовый практикум • 1. Введение → Теория и разделы → Практические задания
+  </footer>
+
+  <script>
+    const STORAGE_KEY = "violet_html_lab_progress_v1";
+
+    const tasks = [
+      {
+        id: 1,
+        topic: "Введение и теги",
+        title: "Задание 1. Главный заголовок и абзац",
+        desc: "Создайте заголовок <h1> со словом «HTML» и абзац <p> с любым текстом внутри.",
+        starter: "<!-- Напишите HTML-код здесь -->\n",
+        hint: "Добавьте <h1>Основы HTML</h1> и <p>Язык разметки веб-страниц.</p>.",
+        validate(code) {
+          const doc = new DOMParser().parseFromString(code, "text/html");
+          const h1 = doc.querySelector("h1");
+          const p = doc.querySelector("p");
+          if (!h1 || !h1.textContent.toLowerCase().includes("html")) {
+            return "Нужен тег <h1>, содержащий слово «HTML».";
+          }
+          if (!p || !p.textContent.trim()) {
+            return "Добавьте непустой абзац <p>.";
+          }
+          return null;
+        }
+      },
+      {
+        id: 2,
+        topic: "Теги выделения",
+        title: "Задание 2. Важное слово в <strong>",
+        desc: "Внутри абзаца <p> выделите слово «код» с помощью тега <strong>.",
+        starter: "<p>Писать чистый </p>",
+        hint: "Добавьте <strong>код</strong> внутри <p>.",
+        validate(code) {
+          const doc = new DOMParser().parseFromString(code, "text/html");
+          const strong = doc.querySelector("p strong");
+          if (!strong || !strong.textContent.toLowerCase().includes("код")) {
+            return "Поместите <strong> со словом «код» внутри тега <p>.";
+          }
+          return null;
+        }
+      },
+      {
+        id: 3,
+        topic: "Атрибуты",
+        title: "Задание 3. Ссылка с атрибутом href",
+        desc: "Создайте гиперссылку <a> с непустым атрибутом href и текстом «Узнать больше».",
+        starter: "<div>\n  \n</div>",
+        hint: 'Используйте <a href="#topic-attrs">Узнать больше</a>.',
+        validate(code) {
+          const doc = new DOMParser().parseFromString(code, "text/html");
+          const a = doc.querySelector("a");
+          if (!a) return "Добавьте тег <a>.";
+          if (!(a.getAttribute("href") || "").trim()) {
+            return "Укажите непустой атрибут href у тега <a>.";
+          }
+          if (!a.textContent.toLowerCase().includes("узнать больше")) {
+            return "В тексте ссылки должно быть «Узнать больше».";
+          }
+          return null;
+        }
+      },
+      {
+        id: 4,
+        topic: "Атрибуты",
+        title: "Задание 4. Поле ввода с placeholder",
+        desc: "Добавьте тег <input> с заполненным атрибутом placeholder.",
+        starter: "<form>\n  \n</form>",
+        hint: 'Пример: <input type="text" placeholder="Введите e-mail">.',
+        validate(code) {
+          const doc = new DOMParser().parseFromString(code, "text/html");
+          const input = doc.querySelector("input");
+          if (!input || !(input.getAttribute("placeholder") || "").trim()) {
+            return "Нужен тег <input> с непустым атрибутом placeholder.";
+          }
+          return null;
+        }
+      },
+      {
+        id: 5,
+        topic: "Списки и структура",
+        title: "Задание 5. Список из двух пунктов",
+        desc: "Создайте маркированный список <ul> ровно с двумя элементами <li>.",
+        starter: "<ul>\n  \n</ul>",
+        hint: "Внутри <ul> напишите два тега <li> с текстом.",
+        validate(code) {
+          const doc = new DOMParser().parseFromString(code, "text/html");
+          const items = doc.querySelectorAll("ul > li");
+          if (items.length !== 2) {
+            return `Сейчас элементов <li> в <ul>: ${items.length}. Нужно ровно 2.`;
+          }
+          if ([...items].some((li) => !li.textContent.trim())) {
+            return "Каждый пункт <li> должен содержать текст.";
+          }
+          return null;
+        }
+      },
+      {
+        id: 6,
+        topic: "Кнопки и интерактив",
+        title: "Задание 6. Кнопка «Следующий шаг»",
+        desc: "Создайте элемент <button> с текстом «Следующий шаг».",
+        starter: "<div>\n  \n</div>",
+        hint: "Напишите <button>Следующий шаг</button>.",
+        validate(code) {
+          const doc = new DOMParser().parseFromString(code, "text/html");
+          const btn = doc.querySelector("button");
+          if (!btn || !btn.textContent.toLowerCase().includes("следующий шаг")) {
+            return "Добавьте <button> с текстом «Следующий шаг».";
+          }
+          return null;
+        }
+      }
+    ];
+
+    let state = loadState();
+    let currentTaskIndex = 0;
+
+    function loadState() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+        return {
+          solved: Array.isArray(parsed.solved) ? parsed.solved : [],
+          topics: Array.isArray(parsed.topics) ? parsed.topics : []
+        };
+      } catch {
+        return { solved: [], topics: [] };
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch {
+        // Игнорируем ошибку хранилища
+      }
+    }
+
+    function updateProgress() {
+      const solvedCount = state.solved.length;
+      const totalTasks = tasks.length;
+      const topicsCount = state.topics.length;
+      const totalItems = totalTasks + 4;
+      const doneItems = solvedCount + topicsCount;
+      const pct = Math.round((doneItems / totalItems) * 100);
+
+      document.getElementById("nav-progress").textContent = `Прогресс: ${pct}%`;
+      document.getElementById("progress-label").textContent =
+        `Прогресс обучения: ${solvedCount} из ${totalTasks} заданий (${pct}% общий)`;
+      document.getElementById("read-topics-count").textContent = topicsCount;
+      document.getElementById("progress-fill").style.width = `${pct}%`;
+
+      document.querySelectorAll(".lesson").forEach((el) => {
+        const topic = el.dataset.topic;
+        const btn = el.querySelector("button");
+        if (btn && state.topics.includes(topic)) {
+          btn.textContent = "Изучено ✓";
+        }
+      });
+    }
+
+    function resetAllProgress() {
+      state = { solved: [], topics: [] };
+      saveState();
+      updateProgress();
+      renderTaskList();
+      document.querySelectorAll(".lesson button").forEach((btn) => {
+        if (btn.textContent.includes("Изучено")) {
+          btn.textContent = "Отметить изученным";
+        }
+      });
+      showFeedback("hint", "Весь прогресс сброшен.");
+    }
+
+    function openPage(pageName) {
+      document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
+      document.getElementById(`page-${pageName}`).classList.add("active");
+
+      document.querySelectorAll(".nav-btn").forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.page === pageName);
+      });
+
+      if (pageName === "tasks") {
+        renderTaskList();
+        updatePreview();
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function jumpToTopic(topicId) {
+      openPage("theory");
+      setTimeout(() => {
+        document.querySelectorAll(".lesson").forEach((l) => l.classList.remove("focused"));
+        const target = document.getElementById(topicId);
+        if (target) {
+          target.classList.add("focused");
+          target.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 90);
+    }
+
+    function filterTopics(topicKey, btnEl) {
+      document.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("active"));
+      if (btnEl) btnEl.classList.add("active");
+
+      document.querySelectorAll(".lesson").forEach((lesson) => {
+        const match = topicKey === "all" || lesson.dataset.topic === topicKey;
+        lesson.style.display = match ? "block" : "none";
+      });
+    }
+
+    function markTopicRead(topicKey, btn) {
+      if (!state.topics.includes(topicKey)) {
+        state.topics.push(topicKey);
+        saveState();
+        updateProgress();
+      }
+      btn.textContent = "Изучено ✓";
+    }
+
+    function copyCode(btn, preId) {
+      const text = document.getElementById(preId).innerText;
+      navigator.clipboard?.writeText(text).catch(() => {});
+      const prev = btn.textContent;
+      btn.textContent = "Скопировано ✓";
+      setTimeout(() => {
+        btn.textContent = prev;
+      }, 1300);
+    }
+
+    function renderTaskList() {
+      const listEl = document.getElementById("task-list");
+      listEl.innerHTML = "";
+      tasks.forEach((task, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "task-item-btn" + (idx === currentTaskIndex ? " active" : "");
+        const done = state.solved.includes(task.id);
+        btn.innerHTML = `
+          <span>${task.title}</span>
+          <span class="status-dot ${done ? "done" : ""}">${done ? "✓ Готово" : "Открыть"}</span>
+        `;
+        btn.onclick = () => selectTask(idx);
+        listEl.appendChild(btn);
+      });
+    }
+
+    function selectTask(idx) {
+      currentTaskIndex = idx;
+      const task = tasks[idx];
+      document.getElementById("task-topic-badge").textContent = task.topic;
+      document.getElementById("task-title").textContent = task.title;
+      document.getElementById("task-desc").textContent = task.desc;
+      document.getElementById("code-editor").value = task.starter;
+      hideFeedback();
+      renderTaskList();
+      updatePreview();
+    }
+
+    function insertSnippet(snippet) {
+      const editor = document.getElementById("code-editor");
+      const start = editor.selectionStart ?? editor.value.length;
+      const end = editor.selectionEnd ?? editor.value.length;
+      editor.value = editor.value.slice(0, start) + snippet + editor.value.slice(end);
+      editor.focus();
+      const pos = start + snippet.length;
+      editor.setSelectionRange(pos, pos);
+      updatePreview();
+    }
+
+    function updatePreview() {
+      const code = document.getElementById("code-editor").value;
+      const frame = document.getElementById("live-frame");
+      frame.srcdoc = `
+        <!DOCTYPE html>
+        <html lang="ru">
+        <head>
+          <meta charset="UTF-8">
+          <style>
+            body { font-family: sans-serif; padding: 12px; color: #1e1b4b; margin: 0; }
+            a { color: #7e22ce; }
+          </style>
+        </head>
+        <body>${code}</body>
+        </html>
+      `;
+    }
+
+    function showFeedback(type, msg) {
+      const box = document.getElementById("feedback");
+      box.className = `feedback show ${type}`;
+      box.textContent = msg;
+    }
+
+    function hideFeedback() {
+      const box = document.getElementById("feedback");
+      box.className = "feedback";
+      box.textContent = "";
+    }
+
+    function checkTask() {
+      const task = tasks[currentTaskIndex];
+      const code = document.getElementById("code-editor").value;
+      const err = task.validate(code);
+      if (err) {
+        showFeedback("err", "Проверьте код: " + err);
+      } else {
+        if (!state.solved.includes(task.id)) {
+          state.solved.push(task.id);
+          saveState();
+          updateProgress();
+          renderTaskList();
+        }
+        showFeedback("ok", "Верно! Задание засчитано. Нажмите «Следующий шаг →», чтобы продолжить.");
+      }
+    }
+
+    function nextStepAction() {
+      if (currentTaskIndex < tasks.length - 1) {
+        selectTask(currentTaskIndex + 1);
+      } else {
+        openPage("intro");
+      }
+    }
+
+    function showHint() {
+      showFeedback("hint", "Подсказка: " + tasks[currentTaskIndex].hint);
+    }
+
+    function resetTask() {
+      document.getElementById("code-editor").value = tasks[currentTaskIndex].starter;
+      hideFeedback();
+      updatePreview();
+    }
+
+    updateProgress();
+    selectTask(0);
+  </script>
+</body>
+</html>
