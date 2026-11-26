@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML & CSS Курс — Фиолетовая версия</title>
+    <style>
+        :root {
+            --bg-dark: #0d0a1a;
+            --bg-card: #17122b;
+            --border: #2e2459;
+            --purple-main: #8b5cf6;
+            --purple-hover: #7c3aed;
+            --purple-glow: rgba(139, 92, 246, 0.2);
+            --text-main: #cbd5e1;
+            --text-title: #f8fafc;
+            --success: #10b981;
+            --error: #f43f5e;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: monospace, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Навигационное меню (вкладки) */
+        .nav {
+            background: var(--bg-card);
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .nav-btn {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid transparent;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .nav-btn:hover {
+            border-color: var(--purple-main);
+            color: var(--text-title);
+        }
+
+        .nav-btn.active {
+            background: var(--purple-main);
+            color: #ffffff;
+            box-shadow: 0 0 15px var(--purple-glow);
+        }
+
+        /* Секции уроков */
+        .lesson-section {
+            display: none;
+            background: var(--bg-card);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            animation: fadeIn 0.25s ease;
+        }
+
+        .lesson-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1, h2, h3 { color: var(--text-title); margin-top: 0; }
+
+        code {
+            background: #07050f;
+            color: #c4b5fd;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        pre {
+            background: #07050f;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            overflow-x: auto;
+            color: #c4b5fd;
+        }
+
+        /* Блок практического задания */
+        .task-box {
+            background: rgba(139, 92, 246, 0.06);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--purple-main);
+            padding: 18px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 110px;
+            background: #07050f;
+            color: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            font-family: monospace;
+            font-size: 14px;
+            margin-top: 10px;
+            resize: vertical;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--purple-main);
+        }
+
+        .action-btn {
+            background: var(--purple-main);
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+
+        .action-btn:hover {
+            background: var(--purple-hover);
+        }
+
+        .feedback {
+            margin-top: 10px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 13px;
+            display: none;
+        }
+
+        .feedback.success {
+            display: block;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .feedback.error {
+            display: block;
+            background: rgba(244, 63, 94, 0.1);
+            color: var(--error);
+            border: 1px solid var(--error);
+        }
+
+        .preview {
+            background: #ffffff;
+            color: #000000;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Кнопки перехода вперед/назад */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Видео */
+        .video-wrapper {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        iframe {
+            width: 100%;
+            max-width: 640px;
+            height: 360px;
+            border-radius: 10px;
+            border: 2px solid var(--purple-main);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Единое меню вкладок -->
+    <div class="nav">
+        <button class="nav-btn active" onclick="openTab(0)">Урок 1: База HTML</button>
+        <button class="nav-btn" onclick="openTab(1)">Урок 2: Лёгкие задачи</button>
+        <button class="nav-btn" onclick="openTab(2)">Урок 3: Сложные задачи</button>
+        <button class="nav-btn" onclick="openTab(3)">Урок 4: Введение в CSS</button>
+        <button class="nav-btn" onclick="openTab(4)">Урок 5: Видеоурок</button>
+    </div>
+
+    <!-- УРОК 1 -->
+    <div class="lesson-section active" id="tab-0">
+        <h1>Урок 1: Что такое HTML и как работают теги</h1>
+        <p><strong>HTML</strong> (HyperText Markup Language) — это язык разметки, с помощью которого создаётся структура всех сайтов. Он объясняет браузеру, где на странице заголовок, где обычный текст, а где картинка.</p>
+        
+        <h2>Как устроены теги?</h2>
+        <p>Тег — это команда для браузера в угловых скобках <code>&lt; и &gt;</code>:</p>
+        <ul>
+            <li><strong>Открывающий тег</strong> начинает элемент: <code>&lt;h1&gt;</code></li>
+            <li><strong>Закрывающий тег</strong> завершает его (со слэшем): <code>&lt;/h1&gt;</code></li>
+        </ul>
+        <p>Пример: <code>&lt;h1&gt;Привет, мир!&lt;/h1&gt;</code></p>
+
+        <div class="bottom-nav">
+            <span></span>
+            <button class="action-btn" onclick="openTab(1)">Перейти к Уроку 2 →</button>
+        </div>
+    </div>
+
+    <!-- УРОК 2 -->
+    <div class="lesson-section" id="tab-1">
+        <h1>Урок 2: Практика (Лёгкий уровень)</h1>
+        <p>Закрепим базовые теги заголовков и абзацев на практике.</p>
+
+        <div class="task-box">
+            <h3>Задание: Заголовок и параграф</h3>
+            <p>Напиши главный заголовок <code>&lt;h1&gt;</code> с текстом «Мой сайт» и абзац <code>&lt;p&gt;</code> с любым текстом под ним.</p>
+            <textarea id="code-2" placeholder="Пиши код здесь..."></textarea>
+            <button class="action-btn" onclick="checkTask2()">Проверить код</button>
+            <div id="fb-2" class="feedback"></div>
+            <div id="prev-2" class="preview"></div>
+        </div>
+
+        <div class="bottom-nav">
+            <button class="action-btn" style="background: transparent; border: 1px solid var(--border);" onclick="openTab(0)">← Урок 1</button>
+            <button class="action-btn" onclick="openTab(2)">Перейти к Уроку 3 →</button>
+        </div>
+    </div>
+
+    <!-- УРОК 3 -->
+    <div class="lesson-section" id="tab-2">
+        <h1>Урок 3: Практика (Сложный уровень)</h1>
+        <p>Списки создаются контейнером <code>&lt;ul&gt;</code> и пунктами <code>&lt;li&gt;</code>. Ссылки делаются тегом <code>&lt;a href="адрес"&gt;Текст&lt;/a&gt;</code>.</p>
+
+        <div class="task-box">
+            <h3>Задание: Меню из списка со ссылкой</h3>
+            <p>Создай список <code>&lt;ul&gt;</code>, внутри которого есть хотя бы один пункт <code>&lt;li&gt;</code> и кликабельная ссылка <code>&lt;a href="..."&gt;</code>.</p>
+            <textarea id="code-3" placeholder="Пиши код здесь..."></textarea>
+            <button class="action-btn" onclick="checkTask3()">Проверить код</button>
+            <div id="fb-3" class="feedback"></div>
+            <div id="prev-3" class="preview"></div>
+        </div>
+
+        <div class="bottom-nav">
+            <button class="action-btn" style="background: transparent; border: 1px solid var(--border);" onclick="openTab(1)">← Урок 2</button>
+            <button class="action-btn" onclick="openTab(3)">Перейти к Уроку 4 →</button>
+        </div>
+    </div>
+
+    <!-- УРОК 4 -->
+    <div class="lesson-section" id="tab-3">
+        <h1>Урок 4: Что такое CSS?</h1>
+        <p>Если HTML — это скелет страницы, то <strong>CSS</strong> (Cascading Style Sheets) — это её дизайн: цвета, шрифты, отступы и фиолетовое оформление, которое ты видишь сейчас.</p>
+        
+        <h2>Пример кода CSS:</h2>
+        <pre>body {
+    background-color: #0d0a1a;
+    color: #cbd5e1;
+    font-family: monospace;
+}</pre>
+
+        <div class="task-box">
+            <h3>Задание: Покрась текст в фиолетовый</h3>
+            <p>Напиши абзац <code>&lt;p&gt;</code>, добавив ему атрибут <code>style="color: purple;"</code> (или любой другой цвет).</p>
+            <textarea id="code-4" placeholder='<p style="color: violet;">Текст</p>'></textarea>
+            <button class="action-btn" onclick="checkTask4()">Проверить код</button>
+            <div id="fb-4" class="feedback"></div>
+            <div id="prev-4" class="preview"></div>
+        </div>
+
+        <div class="bottom-nav">
+            <button class="action-btn" style="background: transparent; border: 1px solid var(--border);" onclick="openTab(2)">← Урок 3</button>
+            <button class="action-btn" onclick="openTab(4)">Перейти к Уроку 5 →</button>
+        </div>
+    </div>
+
+    <!-- УРОК 5 -->
+    <div class="lesson-section" id="tab-4">
+        <h1>Урок 5: Видеоразбор темы</h1>
+        <p>Посмотри обучающий ролик, чтобы закрепить основы вёрстки.</p>
+
+        <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Видеоурок" allowfullscreen></iframe>
+        </div>
+
+        <div class="bottom-nav">
+            <button class="action-btn" style="background: transparent; border: 1px solid var(--border);" onclick="openTab(3)">← Урок 4</button>
+            <button class="action-btn" onclick="openTab(0)">Вернуться в начало ↺</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Переключение вкладок-уроков
+    function openTab(index) {
+        const tabs = document.querySelectorAll('.lesson-section');
+        const btns = document.querySelectorAll('.nav-btn');
+
+        tabs.forEach(t => t.classList.remove('active'));
+        btns.forEach(b => b.classList.remove('active'));
+
+        tabs[index].classList.add('active');
+        btns[index].classList.add('active');
+    }
+
+    // Проверка Урока 2
+    function checkTask2() {
+        const code = document.getElementById('code-2').value;
+        const fb = document.getElementById('fb-2');
+        const prev = document.getElementById('prev-2');
+
+        if (code.includes('<h1>') && code.includes('</h1>') && code.includes('<p>') && code.includes('</p>')) {
+            fb.className = 'feedback success';
+            fb.innerText = 'Отлично! Заголовок и параграф написаны верно.';
+            prev.style.display = 'block';
+            prev.innerHTML = code;
+        } else {
+            fb.className = 'feedback error';
+            fb.innerText = 'Ошибка: убедись, что есть закрытые теги <h1>...</h1> и <p>...</p>.';
+            prev.style.display = 'none';
+        }
+    }
+
+    // Проверка Урока 3
+    function checkTask3() {
+        const code = document.getElementById('code-3').value;
+        const fb = document.getElementById('fb-3');
+        const prev = document.getElementById('prev-3');
+
+        if (code.includes('<ul>') && code.includes('<li>') && code.includes('<a') && code.includes('href=')) {
+            fb.className = 'feedback success';
+            fb.innerText = 'Супер! Список и ссылка работают как надо.';
+            prev.style.display = 'block';
+            prev.innerHTML = code;
+        } else {
+            fb.className = 'feedback error';
+            fb.innerText = 'Ошибка: проверь наличие тегов <ul>, <li> и ссылки <a href="...">.';
+            prev.style.display = 'none';
+        }
+    }
+
+    // Проверка Урока 4
+    function checkTask4() {
+        const code = document.getElementById('code-4').value;
+        const fb = document.getElementById('fb-4');
+        const prev = document.getElementById('prev-4');
+
+        if (code.includes('<p') && code.includes('style=') && code.includes('color:')) {
+            fb.className = 'feedback success';
+            fb.innerText = 'Верно! Стили применились.';
+            prev.style.display = 'block';
+            prev.innerHTML = code;
+        } else {
+            fb.className = 'feedback error';
+            fb.innerText = 'Ошибка: используй тег <p style="color: purple;">...</p>.';
+            prev.style.display = 'none';
+        }
+    }
+</script>
+
+</body>
+</html>
