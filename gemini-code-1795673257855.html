@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Интерактивный HTML & CSS Курс</title>
+    <style>
+        /* БАЗОВЫЕ НАСТРОЙКИ И КРУПНЫЙ ДИЗАЙН */
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 25px;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0d0a1a;
+            color: #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        /* ШАПКА И НАВИГАЦИЯ */
+        .header {
+            background: #17122b;
+            border: 2px solid #38286b;
+            border-radius: 16px;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        }
+
+        .logo { font-size: 20px; font-weight: bold; color: #c4b5fd; letter-spacing: 1px; }
+
+        .nav-menu { display: flex; gap: 12px; flex-wrap: wrap; }
+
+        .tab-btn {
+            background: #21193d;
+            color: white;
+            border: 2px solid #38286b;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .tab-btn:hover { border-color: #8b5cf6; }
+        .tab-btn.active { background: #8b5cf6; border-color: #8b5cf6; box-shadow: 0 0 15px rgba(139, 92, 246, 0.5); }
+
+        /* СТРАНИЦЫ (ГОРИЗОНТАЛЬНЫЙ ПОТОК БЕЗ КОЛОНОК) */
+        .page {
+            display: none;
+            flex-direction: column;
+            gap: 25px;
+            width: 100%;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        .card {
+            background: #17122b;
+            border: 2px solid #38286b;
+            border-radius: 16px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        /* ТИПОГРАФИКА (БОЛЬШИЕ ШРИФТЫ) */
+        h1 { margin: 0; font-size: 28px; color: white; }
+        h2 { margin: 10px 0; font-size: 22px; color: #c4b5fd; }
+        p, li { margin: 0; font-size: 16px; line-height: 1.7; }
+        ul { padding-left: 25px; display: flex; flex-direction: column; gap: 8px; }
+
+        code, pre {
+            background: #07050f;
+            color: #c4b5fd;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 15px;
+            border: 1px solid #38286b;
+        }
+        pre { padding: 15px; }
+
+        /* ПРАКТИКУМ И ИНПУТЫ */
+        .practice-box {
+            background: #21193d;
+            border-left: 6px solid #8b5cf6;
+            padding: 22px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            background: #07050f;
+            color: white;
+            border: 2px solid #38286b;
+            border-radius: 10px;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 15px;
+            resize: vertical;
+        }
+        textarea:focus { outline: none; border-color: #8b5cf6; }
+
+        .btn {
+            background: #8b5cf6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 15px;
+            align-self: flex-start;
+            transition: 0.2s;
+        }
+        .btn:hover { background: #7c3aed; }
+
+        /* ОШИБКИ И ПРЕВЬЮ */
+        .msg {
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-size: 15px;
+            display: none;
+        }
+        .msg.ok { display: block; background: #064e3b; color: #6ee7b7; border: 1px solid #10b981; }
+        .msg.err { display: block; background: #4c0519; color: #fda4af; border: 1px solid #f43f5e; }
+
+        .preview {
+            background: white;
+            color: black;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+            font-size: 16px;
+        }
+
+        /* ТЕСТЫ */
+        .quiz-btn {
+            background: #07050f;
+            border: 2px solid #38286b;
+            padding: 14px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+        .quiz-btn:hover { border-color: #8b5cf6; background: #130f24; }
+        .quiz-btn.correct { background: #064e3b; border-color: #10b981; color: #6ee7b7; }
+        .quiz-btn.wrong { background: #4c0519; border-color: #f43f5e; color: #fda4af; }
+
+        /* МЕСТО ДЛЯ ВИДЕО */
+        .video-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            background: #07050f;
+            border: 3px solid #8b5cf6;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
+        }
+        iframe {
+            width: 100%;
+            height: 480px;
+            border: none;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ВЕРХНЕЕ МЕНЮ -->
+    <div class="header">
+        <div class="logo">⚡ ИНТЕРАКТИВНЫЙ HTML & CSS КУРС</div>
+        <div class="nav-menu">
+            <button class="tab-btn active" onclick="openPage(0)">1. База и Текст</button>
+            <button class="tab-btn" onclick="openPage(1)">2. Ссылки и CSS</button>
+            <button class="tab-btn" onclick="openPage(2)">3. Видео и Итог</button>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         СТРАНИЦА 1: БАЗА HTML И ТЕКСТ (ГОРИЗОНТАЛЬНО)
+         ========================================== -->
+    <div class="page active" id="page-0">
+        <div class="card">
+            <h1>Страница 1: Каркас HTML и Текст</h1>
+            <p><strong>HTML</strong> (HyperText Markup Language) создаёт скелет любого сайта с помощью специальных тегов. Браузер читает этот код и выводит его на экран.</p>
+            
+            <h2>Главные теги документа:</h2>
+            <ul>
+                <li><code>&lt;head&gt;</code> — служебная часть для настроек и названия вкладки.</li>
+                <li><code>&lt;body&gt;</code> — видимая область страницы (текст, картинки, кнопки).</li>
+            </ul>
+
+            <h2>Текстовые теги:</h2>
+            <ul>
+                <li><code>&lt;h1&gt; ... &lt;/h1&gt;</code> — самый главный заголовок страницы.</li>
+                <li><code>&lt;p&gt; ... &lt;/p&gt;</code> — стандартный абзац текстового контента.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>🛠 Практическое задание</h2>
+            <div class="practice-box">
+                <p>Напиши структуру: теги <code>&lt;head&gt;&lt;/head&gt;</code>, а внутри <code>&lt;body&gt;</code> добавь заголовок <code>&lt;h1&gt;Привет&lt;/h1&gt;</code> и абзац <code>&lt;p&gt;Мой сайт&lt;/p&gt;</code>.</p>
+                <textarea id="input-1" placeholder="<head></head>&#10;<body>&#10;  <h1>Привет</h1>&#10;  <p>Мой сайт</p>&#10;</body>"></textarea>
+                <button class="btn" onclick="checkTask(1)">Проверить мой код</button>
+                <div id="msg-1" class="msg"></div>
+                <div id="prev-1" class="preview"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🧠 Проверочный мини-тест</h2>
+            <p>Внутри какого тега пишется весь контент, который видит пользователь на экране?</p>
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 5px;">
+                <div class="quiz-btn" onclick="checkQuiz('q1', false, 'Неверно! В теге <head> хранятся только технические настройки.')">А) Внутри &lt;head&gt;</div>
+                <div class="quiz-btn" onclick="checkQuiz('q1', true, 'Отлично! Весь видимый интерфейс сайта лежит в теге <body>.')">Б) Внутри &lt;body&gt;</div>
+            </div>
+            <div id="q1" class="msg"></div>
+        </div>
+
+        <button class="btn" style="padding: 15px 30px; font-size: 18px;" onclick="openPage(1)">Перейти к странице 2 →</button>
+    </div>
+
+    <!-- ==========================================
+         СТРАНИЦА 2: ССЫЛКИ И РЕДАКТОР ЦВЕТА CSS
+         ========================================== -->
+    <div class="page" id="page-1">
+        <div class="card">
+            <h1>Страница 2: Ссылки и Стили CSS</h1>
+            <p>Ссылки создаются с помощью тега <code>&lt;a href="адрес"&gt;Текст ссылки&lt;/a&gt;</code>.</p>
+            <p><strong>CSS</strong> отвечает за оформление и дизайн. Чтобы изменить цвет текста, используется атрибут <code>style="color: цвет;"</code>.</p>
+
+            <h2>🎨 Палитра цветов CSS:</h2>
+            <p>Выбери нужный цвет с помощью палитры и нажми кнопку, чтобы добавить его в свой код:</p>
+            <div style="display: flex; align-items: center; gap: 15px; background: #21193d; padding: 15px; border-radius: 10px; border: 2px solid #38286b;">
+                <input type="color" id="picker" value="#8b5cf6" onchange="updateColor()" style="width: 50px; height: 50px; border: none; cursor: pointer; background: none;">
+                <code id="hex" style="font-size: 18px;">#8b5cf6</code>
+                <button class="btn" onclick="addColorCode()">Вставить в задание</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🛠 Практическое задание</h2>
+            <div class="practice-box">
+                <p>Напиши работающую ссылку <code>&lt;a href="https://google.com"&gt;Google&lt;/a&gt;</code> и абзац с раскрашенным текстом через CSS.</p>
+                <textarea id="input-2" placeholder='<a href="https://google.com">Перейти в Google</a>'></textarea>
+                <button class="btn" onclick="checkTask(2)">Проверить мой код</button>
+                <div id="msg-2" class="msg"></div>
+                <div id="prev-2" class="preview"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🧠 Проверочный мини-тест</h2>
+            <p>Какой атрибут внутри тега &lt;a&gt; отвечает за адрес веб-страницы?</p>
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 5px;">
+                <div class="quiz-btn" onclick="checkQuiz('q2', true, 'Правильно! Атрибут href указывает адрес перехода.')">А) href</div>
+                <div class="quiz-btn" onclick="checkQuiz('q2', false, 'Ошибка! Атрибут src используется для подключения картинок.')">Б) src</div>
+            </div>
+            <div id="q2" class="msg"></div>
+        </div>
+
+        <div style="display: flex; gap: 15px;">
+            <button class="btn" style="background: #38286b; padding: 15px 30px; font-size: 18px;" onclick="openPage(0)">← Назад</button>
+            <button class="btn" style="padding: 15px 30px; font-size: 18px;" onclick="openPage(2)">Перейти к странице 3 →</button>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         СТРАНИЦА 3: ВИДЕО И ФИНАЛЬНЫЙ ЭКЗАМЕН
+         ========================================== -->
+    <div class="page" id="page-2">
+        <div class="card">
+            <h1>Страница 3: Видеоурок и Закрепление</h1>
+            <p>Посмотри подробный обучающий видеоролик, чтобы закрепить все полученные знания по вёрстке:</p>
+            
+            <!-- Большое пространство для видео -->
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/BJYqt7vvqbc" allowfullscreen title="Обучающее видео"></iframe>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🏆 Финальный экзаменационный тест</h2>
+            <p>Как правильно обозначается закрытие парного тега в языке HTML?</p>
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 5px;">
+                <div class="quiz-btn" onclick="checkQuiz('q3', false, 'Неверно! Без прямого слэша тег не будет закрыт.')">А) &lt;p&gt;</div>
+                <div class="quiz-btn" onclick="checkQuiz('q3', true, 'Отлично! Прямой слэш (/) указывает браузеру на закрытие тега.')">Б) &lt;/p&gt;</div>
+            </div>
+            <div id="q3" class="msg"></div>
+        </div>
+
+        <div style="display: flex; gap: 15px;">
+            <button class="btn" style="background: #38286b; padding: 15px 30px; font-size: 18px;" onclick="openPage(1)">← Назад</button>
+            <button class="btn" style="padding: 15px 30px; font-size: 18px;" onclick="openPage(0)">Вернуться в начало ↺</button>
+        </div>
+    </div>
+
+    <!-- СКРИПТЫ УПРАВЛЕНИЯ -->
+    <script>
+        // Переключение страниц
+        function openPage(num) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById('page-' + num).classList.add('active');
+            document.querySelectorAll('.tab-btn')[num].classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Проверка тестов
+        function checkQuiz(msgId, isRight, text) {
+            const box = document.getElementById(msgId);
+            box.className = isRight ? 'msg ok' : 'msg err';
+            box.innerText = (isRight ? '✅ ' : '❌ ') + text;
+        }
+
+        // Обновление палитры цветов
+        function updateColor() {
+            const color = document.getElementById('picker').value;
+            document.getElementById('hex').innerText = color;
+        }
+
+        function addColorCode() {
+            const color = document.getElementById('picker').value;
+            document.getElementById('input-2').value += `\n<p style="color: ${color};">Цветной текст</p>`;
+        }
+
+        // Проверка заданий с разбором ошибок
+        function checkTask(num) {
+            const rawCode = document.getElementById('input-' + num).value;
+            const code = rawCode.toLowerCase();
+            const msg = document.getElementById('msg-' + num);
+            const prev = document.getElementById('prev-' + num);
+
+            let error = '';
+
+            if (num === 1) {
+                if (!code.includes('<head>') || !code.includes('</head>')) error = 'Забыли добавить тег <head> или закрыть его </head>.';
+                else if (!code.includes('<body>') || !code.includes('</body>')) error = 'Забыли добавить тег <body> или закрыть его </body>.';
+                else if (!code.includes('<h1>') || !code.includes('</h1>')) error = 'Отсутствует главный заголовок <h1>...</h1>.';
+                else if (!code.includes('<p>') || !code.includes('</p>')) error = 'Отсутствует абзац текста <p>...</p>.';
+            }
+
+            if (num === 2) {
+                if (!code.includes('<a') || !code.includes('href=')) error = 'Не найдена ссылка <a href="...">. Проверьте правильность написания.';
+            }
+
+            if (error) {
+                msg.className = 'msg err';
+                msg.innerText = '❌ Ошибка: ' + error;
+                prev.style.display = 'none';
+            } else {
+                msg.className = 'msg ok';
+                msg.innerText = '✅ Отлично! Задание выполнено абсолютно верно.';
+                prev.style.display = 'block';
+                prev.innerHTML = rawCode;
+            }
+        }
+    </script>
+
+</body>
+</html>
