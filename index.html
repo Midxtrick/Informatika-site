@@ -2,110 +2,152 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Интерактивный HTML & CSS Курс</title>
+    <title>Интерактивный учебник HTML & CSS</title>
     <style>
+        /* =========================================
+           1. ОСНОВНЫЕ ЦВЕТА И НАСТРОЙКИ ЭКРАНА
+           ========================================= */
         :root {
-            --bg-dark: #0d0a1a;
-            --bg-card: #17122b;
-            --border: #2e2459;
+            --bg-dark: #090614;
+            --bg-card: #130e26;
+            --bg-box: #1b1436;
+            --border: #322566;
             --purple-main: #8b5cf6;
             --purple-hover: #7c3aed;
-            --purple-glow: rgba(139, 92, 246, 0.2);
-            --text-main: #cbd5e1;
-            --text-title: #f8fafc;
+            --purple-light: #c4b5fd;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
             --success: #10b981;
             --error: #f43f5e;
         }
 
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
 
         html, body {
+            width: 100%;
             height: 100vh;
             margin: 0;
             padding: 0;
-            overflow: hidden;
-        }
-
-        body {
-            font-family: monospace, sans-serif;
+            overflow: hidden; /* Убираем прокрутку всего окна */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-dark);
             color: var(--text-main);
-            display: flex;
-            flex-direction: column;
-            padding: 15px;
         }
 
-        .container {
-            max-width: 1000px;
+        /* Главный контейнер на 100% ширины и высоты */
+        .app-wrapper {
             width: 100%;
             height: 100%;
-            margin: 0 auto;
             display: flex;
             flex-direction: column;
+            padding: 12px 20px;
+            gap: 12px;
         }
 
-        /* Навигационные вкладки */
-        .nav {
+        /* =========================================
+           2. ВЕРХНЕЕ МЕНЮ НАВИГАЦИИ
+           ========================================= */
+        .navbar {
             background: var(--bg-card);
-            padding: 10px;
-            border-radius: 12px;
             border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 10px 15px;
             display: flex;
-            gap: 6px;
+            justify-content: space-between;
+            align-items: center;
             flex-wrap: wrap;
-            margin-bottom: 12px;
+            gap: 10px;
             flex-shrink: 0;
         }
 
+        .logo {
+            font-weight: bold;
+            font-size: 16px;
+            color: var(--purple-light);
+            letter-spacing: 0.5px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
         .nav-btn {
-            background: transparent;
+            background: var(--bg-box);
             color: var(--text-main);
-            border: 1px solid transparent;
-            padding: 8px 14px;
+            border: 1px solid var(--border);
+            padding: 8px 16px;
             border-radius: 8px;
             cursor: pointer;
-            font-family: inherit;
-            font-weight: bold;
-            font-size: 12.5px;
+            font-weight: 600;
+            font-size: 13px;
             transition: 0.2s;
         }
 
         .nav-btn:hover {
             border-color: var(--purple-main);
-            color: var(--text-title);
         }
 
         .nav-btn.active {
             background: var(--purple-main);
             color: #ffffff;
-            box-shadow: 0 0 12px var(--purple-glow);
+            border-color: var(--purple-main);
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.35);
         }
 
-        /* Секции уроков на весь экран */
-        .lesson-section {
+        /* =========================================
+           3. РАБОЧАЯ ОБЛАСТЬ УРОКА (2 КОЛОНКИ)
+           ========================================= */
+        .lesson-page {
             display: none;
             flex: 1;
-            background: var(--bg-card);
-            padding: 20px 25px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            overflow-y: auto;
+            overflow: hidden;
             flex-direction: column;
-            justify-content: space-between;
         }
 
-        .lesson-section.active {
+        .lesson-page.active {
             display: flex;
         }
 
-        h1, h2, h3 { color: var(--text-title); margin-top: 0; margin-bottom: 10px; }
-        p { margin: 8px 0; line-height: 1.5; font-size: 13.5px; }
+        /* Сетка на всю ширину: слева теория, справа практика */
+        .columns-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 16px;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        /* Красивый скроллбар внутри панелей */
+        .panel::-webkit-scrollbar { width: 6px; }
+        .panel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+        h1 { font-size: 22px; margin: 0; color: #ffffff; }
+        h2 { font-size: 17px; margin: 4px 0; color: var(--purple-light); }
+        h3 { font-size: 15px; margin: 0 0 6px 0; color: #ffffff; }
+        p, li { font-size: 14px; line-height: 1.6; margin: 0; }
+        ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
 
         code {
             background: #07050f;
-            color: #c4b5fd;
+            color: var(--purple-light);
             padding: 2px 6px;
             border-radius: 4px;
+            font-family: monospace;
             border: 1px solid var(--border);
         }
 
@@ -114,282 +156,599 @@
             padding: 12px;
             border-radius: 8px;
             border: 1px solid var(--border);
-            overflow-x: auto;
-            color: #c4b5fd;
+            color: var(--purple-light);
+            font-family: monospace;
             font-size: 13px;
+            margin: 0;
+            overflow-x: auto;
         }
 
-        /* Блок практики */
-        .task-box {
-            background: rgba(139, 92, 246, 0.05);
+        /* Блок для встроенных SVG-картинок и схем */
+        .illustration-box {
+            background: var(--bg-box);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .illustration-caption {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        /* =========================================
+           4. ПРАКТИКА И МИНИ-ТЕСТ (ПРАВАЯ КОЛОНКА)
+           ========================================= */
+        .card-box {
+            background: var(--bg-box);
             border: 1px solid var(--border);
             border-left: 4px solid var(--purple-main);
+            border-radius: 10px;
             padding: 15px;
-            border-radius: 8px;
-            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         textarea {
             width: 100%;
-            height: 80px;
+            height: 95px;
             background: #07050f;
             color: #ffffff;
             border: 1px solid var(--border);
-            border-radius: 6px;
+            border-radius: 8px;
             padding: 10px;
             font-family: monospace;
-            font-size: 13px;
-            margin-top: 8px;
+            font-size: 13.5px;
             resize: vertical;
         }
 
         textarea:focus { outline: none; border-color: var(--purple-main); }
 
-        .action-btn {
+        .btn-primary {
             background: var(--purple-main);
             color: #ffffff;
             border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
+            padding: 9px 18px;
+            border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 8px;
-            font-family: inherit;
-            transition: 0.2s;
             font-size: 13px;
+            align-self: flex-start;
+            transition: 0.2s;
         }
 
-        .action-btn:hover { background: var(--purple-hover); }
+        .btn-primary:hover { background: var(--purple-hover); }
 
+        /* Сообщение об ошибке или успехе */
         .feedback {
-            margin-top: 8px;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 12.5px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.5;
             display: none;
         }
-        .feedback.success { display: block; background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid var(--success); }
-        .feedback.error { display: block; background: rgba(244, 63, 94, 0.1); color: var(--error); border: 1px solid var(--error); }
+        .feedback.success {
+            display: block;
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid var(--success);
+            color: #6ee7b7;
+        }
+        .feedback.error {
+            display: block;
+            background: rgba(244, 63, 94, 0.12);
+            border: 1px solid var(--error);
+            color: #fda4af;
+        }
 
-        .preview {
+        /* Окно результата (живой предпросмотр) */
+        .live-preview {
             background: #ffffff;
-            color: #000000;
-            padding: 10px;
-            border-radius: 6px;
-            margin-top: 8px;
+            color: #0f172a;
+            padding: 12px;
+            border-radius: 8px;
             display: none;
+            border: 2px solid var(--purple-main);
         }
 
-        /* Тест */
-        .quiz-option {
+        /* Варианты ответов мини-теста */
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .quiz-opt {
             background: #07050f;
             border: 1px solid var(--border);
-            padding: 10px 14px;
-            border-radius: 6px;
-            margin-bottom: 8px;
+            padding: 9px 12px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: 0.2s;
             font-size: 13px;
+            transition: 0.2s;
         }
-        .quiz-option:hover { border-color: var(--purple-main); color: var(--text-title); }
-        .quiz-option.correct { background: rgba(16, 185, 129, 0.15); border-color: var(--success); color: var(--success); }
-        .quiz-option.wrong { background: rgba(244, 63, 94, 0.15); border-color: var(--error); color: var(--error); }
 
-        /* Низ секции */
-        .bottom-nav {
+        .quiz-opt:hover { border-color: var(--purple-main); }
+        .quiz-opt.correct { background: rgba(16, 185, 129, 0.18); border-color: var(--success); color: #6ee7b7; }
+        .quiz-opt.wrong { background: rgba(244, 63, 94, 0.18); border-color: var(--error); color: #fda4af; }
+
+        /* Нижняя панель переключения уроков */
+        .footer-nav {
             display: flex;
             justify-content: space-between;
-            margin-top: 15px;
             padding-top: 10px;
-            border-top: 1px solid var(--border);
             flex-shrink: 0;
         }
 
-        /* Видео */
-        .video-wrapper {
-            margin-top: 10px;
-            display: flex;
-            justify-content: center;
+        .btn-outline {
+            background: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
         }
+        .btn-outline:hover { border-color: var(--purple-main); color: #ffffff; }
+
         iframe {
             width: 100%;
-            max-width: 560px;
-            height: 315px;
+            height: 260px;
             border-radius: 8px;
             border: 2px solid var(--purple-main);
+        }
+
+        /* Адаптация под узкие экраны */
+        @media (max-width: 850px) {
+            html, body { height: auto; overflow: auto; }
+            .columns-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- Меню -->
-    <div class="nav">
-        <button class="nav-btn active" onclick="openTab(0)">Урок 1: База HTML</button>
-        <button class="nav-btn" onclick="openTab(1)">Урок 2: Лёгкие задачи</button>
-        <button class="nav-btn" onclick="openTab(2)">Урок 3: Сложные задачи</button>
-        <button class="nav-btn" onclick="openTab(3)">Урок 4: Введение в CSS</button>
-        <button class="nav-btn" onclick="openTab(4)">Урок 5: Видео и Тест</button>
+<div class="app-wrapper">
+    <!-- ВЕРХНЕЕ МЕНЮ -->
+    <div class="navbar">
+        <div class="logo">⚡ HTML & CSS АКАДЕМИЯ</div>
+        <div class="nav-buttons">
+            <button class="nav-btn active" onclick="switchLesson(0)">Урок 1: База HTML</button>
+            <button class="nav-btn" onclick="switchLesson(1)">Урок 2: Лёгкие задачи</button>
+            <button class="nav-btn" onclick="switchLesson(2)">Урок 3: Списки и ссылки</button>
+            <button class="nav-btn" onclick="switchLesson(3)">Урок 4: Основы CSS</button>
+            <button class="nav-btn" onclick="switchLesson(4)">Урок 5: Видео и Итог</button>
+        </div>
     </div>
 
-    <!-- УРОК 1 -->
-    <div class="lesson-section active" id="tab-0">
-        <div>
-            <h1>Урок 1: Что такое HTML и как работают теги</h1>
-            <p><strong>HTML</strong> (HyperText Markup Language) — это язык разметки, с помощью которого создаётся каркас всех сайтов. Он объясняет браузеру, где на странице заголовок, где текст, а где картинка.</p>
-            <h2>Как устроены теги?</h2>
-            <p>Тег — это команда для браузера в угловых скобках <code>&lt; и &gt;</code>. Большинство тегов парные: открывающий <code>&lt;h1&gt;</code> и закрывающий со слэшем <code>&lt;/h1&gt;</code>.</p>
+    <!-- =================================================================
+         УРОК 1: БАЗА HTML И КАРКАС СТРАНИЦЫ
+         ================================================================= -->
+    <div class="lesson-page active" id="lesson-0">
+        <div class="columns-grid">
+            <!-- Левая колонка: Теория и схема -->
+            <div class="panel">
+                <h1>Урок 1: Что такое HTML и как устроен сайт?</h1>
+                <p><strong>HTML</strong> (HyperText Markup Language) — это язык гипертекстовой разметки. Он не является языком программирования (в нём нет циклов или сложных вычислений), его главная задача — <strong>построить скелет страницы</strong> и объяснить браузеру, где заголовок, где абзац текста, а где кнопка.</p>
+                
+                <h2>Из чего состоит базовый HTML-файл?</h2>
+                <ul>
+                    <li><code>&lt;!DOCTYPE html&gt;</code> — сообщает браузеру, что используется современный стандарт HTML5.</li>
+                    <li><code>&lt;html&gt;</code> — главный корневой тег, внутри которого лежит весь сайт.</li>
+                    <li><code>&lt;head&gt;</code> — «голова» страницы. Здесь хранятся настройки, кодировка и название вкладки (<code>&lt;title&gt;</code>). Пользователь не видит содержимое этого блока напрямую.</li>
+                    <li><code>&lt;body&gt;</code> — «тело» страницы. Всё, что вы напишете внутри <code>&lt;body&gt;</code>, отобразится на экране.</li>
+                </ul>
+
+                <!-- Встроенная SVG-картинка: Скелет HTML -->
+                <div class="illustration-box">
+                    <svg width="100%" height="140" viewBox="0 0 500 140">
+                        <rect x="10" y="5" width="480" height="130" rx="8" fill="#090614" stroke="#8b5cf6" stroke-width="2"/>
+                        <text x="25" y="25" fill="#c4b5fd" font-family="monospace" font-size="13">&lt;html&gt;</text>
+                        
+                        <rect x="35" y="33" width="430" height="35" rx="6" fill="#1b1436" stroke="#3b82f6" stroke-width="1.5"/>
+                        <text x="50" y="55" fill="#93c5fd" font-family="monospace" font-size="13">&lt;head&gt; Настройки и заголовок вкладки &lt;/head&gt;</text>
+                        
+                        <rect x="35" y="75" width="430" height="45" rx="6" fill="#1b1436" stroke="#10b981" stroke-width="1.5"/>
+                        <text x="50" y="102" fill="#6ee7b7" font-family="monospace" font-size="13">&lt;body&gt; Видимый контент: текст, фото, меню &lt;/body&gt;</text>
+                    </svg>
+                    <div class="illustration-caption">Схема строения любой веб-страницы</div>
+                </div>
+            </div>
+
+            <!-- Правая колонка: Практика + Мини-тест -->
+            <div class="panel">
+                <div class="card-box">
+                    <h3>🛠 Практика: Создай скелет страницы</h3>
+                    <p>Напиши два главных раздела страницы: открывающий и закрывающий тег <code>&lt;head&gt;&lt;/head&gt;</code>, а после него <code>&lt;body&gt;Привет&lt;/body&gt;</code>.</p>
+                    <textarea id="input-1" placeholder="<head></head>&#10;<body>Привет</body>"></textarea>
+                    <button class="btn-primary" onclick="checkLesson1()">Проверить код</button>
+                    <div id="fb-1" class="feedback"></div>
+                    <div id="prev-1" class="live-preview"></div>
+                </div>
+
+                <div class="card-box">
+                    <h3>🧠 Мини-тест по Уроку 1</h3>
+                    <p>Внутри какого тега размещается всё, что пользователь видит на экране сайта?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-opt" onclick="checkQuiz(this, false, 'qfb-1', 'Неверно. В теге <head> хранятся только технические настройки и заголовок вкладки.')">А) Внутри &lt;head&gt;</div>
+                        <div class="quiz-opt" onclick="checkQuiz(this, true, 'qfb-1', 'Верно! Тег <body> отвечает за всю видимую часть веб-страницы.')">Б) Внутри &lt;body&gt;</div>
+                        <div class="quiz-opt" onclick="checkQuiz(this, false, 'qfb-1', 'Неверно. Тег <title> задаёт только название вкладки в браузере.')">В) Внутри &lt;title&gt;</div>
+                    </div>
+                    <div id="qfb-1" class="feedback"></div>
+                </div>
+            </div>
         </div>
-        <div class="bottom-nav">
+
+        <div class="footer-nav">
             <span></span>
-            <button class="action-btn" onclick="openTab(1)">К Уроку 2 →</button>
+            <button class="btn-primary" onclick="switchLesson(1)">Перейти к Уроку 2 →</button>
         </div>
     </div>
 
-    <!-- УРОК 2 -->
-    <div class="lesson-section" id="tab-1">
-        <div>
-            <h1>Урок 2: Практика (Лёгкий уровень)</h1>
-            <p>Закрепим базовые теги заголовков и абзацев.</p>
-            <div class="task-box">
-                <h3>Задание: Написать заголовок и параграф</h3>
-                <p>Напиши заголовок <code>&lt;h1&gt;Привет&lt;/h1&gt;</code> и абзац <code>&lt;p&gt;Мир&lt;/p&gt;</code>.</p>
-                <textarea id="code-2" placeholder="<h1>Заголовок</h1><p>Текст</p>"></textarea>
-                <button class="action-btn" onclick="checkTask2()">Проверить код</button>
-                <div id="fb-2" class="feedback"></div>
-                <div id="prev-2" class="preview"></div>
+    <!-- =================================================================
+         УРОК 2: ТЕГИ ТЕКСТА И ЗАГОЛОВКОВ (ЛЁГКИЕ ЗАДАЧИ)
+         ================================================================= -->
+    <div class="lesson-page" id="lesson-1">
+        <div class="columns-grid">
+            <div class="panel">
+                <h1>Урок 2: Анатомия тега, заголовки и текст</h1>
+                <p>Вся разметка состоит из <strong>тегов</strong> — команд в угловых скобках. Большинство тегов парные: у них есть начало и конец (со слэшем <code>/</code>).</p>
+                
+                <!-- Встроенная SVG-картинка: Анатомия тега -->
+                <div class="illustration-box">
+                    <svg width="100%" height="100" viewBox="0 0 500 100">
+                        <rect x="10" y="10" width="480" height="80" rx="8" fill="#090614" stroke="#8b5cf6" stroke-width="1.5"/>
+                        <text x="65" y="48" fill="#c4b5fd" font-family="monospace" font-size="20" font-weight="bold">&lt;h1&gt;</text>
+                        <text x="145" y="48" fill="#ffffff" font-family="sans-serif" font-size="18">Мой первый сайт</text>
+                        <text x="335" y="48" fill="#f43f5e" font-family="monospace" font-size="20" font-weight="bold">&lt;/h1&gt;</text>
+                        
+                        <text x="50" y="75" fill="#94a3b8" font-size="11">Открывающий тег</text>
+                        <text x="195" y="75" fill="#94a3b8" font-size="11">Содержимое</text>
+                        <text x="320" y="75" fill="#94a3b8" font-size="11">Закрывающий тег</text>
+                    </svg>
+                    <div class="illustration-caption">Как устроен парный HTML-элемент</div>
+                </div>
+
+                <h2>Основные текстовые теги:</h2>
+                <ul>
+                    <li><code>&lt;h1&gt; ... &lt;/h1&gt;</code> — самый главный заголовок на странице (используется 1 раз).</li>
+                    <li><code>&lt;h2&gt; ... &lt;/h2&gt;</code> — подзаголовок раздела (всего уровней от <code>h1</code> до <code>h6</code>).</li>
+                    <li><code>&lt;p&gt; ... &lt;/p&gt;</code> — обычный абзац (параграф) текста.</li>
+                    <li><code>&lt;strong&gt; ... &lt;/strong&gt;</code> — выделение текста <strong>жирным шрифтом</strong>.</li>
+                </ul>
+            </div>
+
+            <div class="panel">
+                <div class="card-box">
+                    <h3>🛠 Практика (Лёгкий уровень)</h3>
+                    <p>Напиши главный заголовок <code>&lt;h1&gt;</code> с любым названием и абзац <code>&lt;p&gt;</code> с описанием под ним.</p>
+                    <textarea id="input-2" placeholder="<h1>Мой блог</h1>&#10;<p>Добро пожаловать на мой сайт!</p>"></textarea>
+                    <button class="btn-primary" onclick="checkLesson2()">Проверить код</button>
+                    <div id="fb-2" class="feedback"></div>
+                    <div id="prev-2" class="live-preview"></div>
+                </div>
+
+                <div class="card-box">
+                    <h3>🧠 Мини-тест по Уроку 2</h3>
+                    <p>Какой тег используется для создания самого крупного и главного заголовка?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-opt" onclick="checkQuiz(this, false, 'qfb-2', 'Ошибка: тег <h6 > — это самый мелкий заголовок шестого уровня.')">А) &lt;h6&gt;</div>
+                        <div class="quiz-opt" onclick="checkQuiz(this, true, 'qfb-2', 'Правильно! <h1> — заголовок первого (самого главного) уровня.')">Б) &lt;h1&gt;</div>
+                        <div class="quiz-opt" onclick="checkQuiz(this, false, 'qfb-2', 'Ошибка: тег <p> используется для обычных текстовых абзацев.')">В) &lt;p&gt;</div>
+                    </div>
+                    <div id="qfb-2" class="feedback"></div>
+                </div>
             </div>
         </div>
-        <div class="bottom-nav">
-            <button class="action-btn" style="background: transparent; border: 1px solid var(--border);" onclick="openTab(0)">← Назад</button>
-            <button class="action-btn" onclick="openTab(2)">К Уроку 3 →</button>
+
+        <div class="footer-nav">
+            <button class="btn-outline" onclick="switchLesson(0)">← Урок 1</button>
+            <button class="btn-primary" onclick="switchLesson(2)">Перейти к Уроку 3 →</button>
         </div>
     </div>
 
-    <!-- УРОК 3 -->
-    <div class="lesson-section" id="tab-2">
-        <div>
-            <h1>Урок 3: Практика (Сложный уровень)</h1>
-            <p>Создание списков <code>&lt;ul&gt; &lt;li&gt;</code> и ссылок <code>&lt;a href="..."&gt;</code>.</p>
-            <div class="task-box">
-                <h3>Задание: Ссылка и список</h3>
-                <p>Создай список с пунктом внутри которого есть ссылка <code>&lt;a href="https://google.com"&gt;Google&lt;/a&gt;</code>.</p>
-                <textarea id="code-3" placeholder="<ul><li><a href='https://google.com'>Google</a></li></ul>"></textarea>
-                <button class="action-btn" onclick="checkTask3()">Проверить код</button>
-                <div id="fb-3" class="feedback"></div>
-                <div id="prev-3" class="preview"></div>
+    <!-- =================================================================
+         УРОК 3: СПИСКИ, ССЫЛКИ И КАРТИНКИ (СЛОЖНЫЕ ЗАДАЧИ)
+         ================================================================= -->
+    <div class="lesson-page" id="lesson-2">
+        <div class="columns-grid">
+            <div class="panel">
+                <h1>Урок 3: Списки, ссылки и атрибуты</h1>
+                <p>У тегов бывают <strong>атрибуты</strong> — дополнительные настройки, которые пишутся внутри открывающего тега (например, адрес ссылки).</p>
+
+                <h2>1. Ссылки (тег &lt;a&gt;)</h2>
+                <p>Чтобы сделать текст кликабельным, используют тег <code>&lt;a&gt;</code> и обязательный атрибут <code>href</code> (адрес перехода):</p>
+                <pre>&lt;a href="https://google.com"&gt;Открыть Google&lt;/a&gt;</pre>
+
+                <h2>2. Маркированные списки (&lt;ul&gt; и &lt;li&gt;)</h2>
+                <p>Списки строятся по принципу матрёшки: снаружи контейнер <code>&lt;ul&gt;</code>, а внутри каждый пункт оборачивается в <code>&lt;li&gt;</code>:</p>
+                <pre>&lt;ul&gt;
+    &lt;li&gt;Первый пункт&lt;/li&gt;
+    &lt;li&gt;Второй пункт&lt;/li&gt;
+&lt;/ul&gt;</pre>
+            </div>
+
+            <div class="panel">
+                <div class="card-box">
+                    <h3>🛠 Практика (Сложный уровень)</h3>
+                    <p>Создай маркированный список <code>&lt;ul&gt;</code>, внутри которого есть пункт <code>&lt;li&gt;</code> с кликабельной ссылкой <code>&lt;a href="..."&gt;</code>.</p>
+                    <textarea id="input-3" placeholder="<ul>&#10;  <li><a href='https://ya.ru'>Поиск</a></li>&#10;</ul>"></textarea>
+                    <button class="btn-primary" onclick="checkLesson3()">Проверить код</button>
+                    <div id="fb-3" class="feedback"></div>
+                    <div id="prev-3" class="live-preview"></div>
+                </div>
+
+                <div class="card-box">
+                    <h3>🧠 Мини-тест по Уроку 3</h3>
+                    <p>Какой атрибут внутри тега &lt;a&gt; указывает адрес страницы, куда перейдёт пользователь?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-opt" onclick="checkQuiz(this, true, 'qfb-3', 'Верно! Атрибут href (Hypertext Reference) задаёт адрес ссылки.')">А) href="..."</div>
+                        <div class="quiz-opt" onclick="checkQuiz(this, false, 'qfb-3', 'Неверно. Атрибут src используется для указания пути к картинке в теге <img>.')">Б) src="..."</div>
+                        <div class="quiz-opt" onclick="checkQuiz(this, false, 'qfb-3', 'Неверно. Такого атрибута в HTML не существует.')">В) link="..."</div>
+                    </div>
+                    <div id="qfb-3" class="feedback"></div>
+                </div>
             </div>
         </div>
-        <div class="bottom-nav">
-            <button class="action-btn" style="background: transparent; border: 1px solid var(--border);" onclick="openTab(1)">← Назад</button>
-            <button class="action-btn" onclick="openTab(3)">К Уроку 4 →</button>
+
+        <div class="footer-nav">
+            <button class="btn-outline" onclick="switchLesson(1)">← Урок 2</button>
+            <button class="btn-primary" onclick="switchLesson(3)">Перейти к Уроку 4 →</button>
         </div>
     </div>
 
-    <!-- УРОК 4 -->
-    <div class="lesson-section" id="tab-3">
-        <div>
-            <h1>Урок 4: Что такое CSS?</h1>
-            <p>CSS отвечает за дизайн сайта: цвета, шрифты и стили.</p>
-            <pre>body { background-color: #0d0a1a; color: #cbd5e1; }</pre>
-            <div class="task-box">
-                <h3>Задание: Стили текста</h3>
-                <p>Напиши абзац с цветом через стиль: <code>&lt;p style="color: purple;"&gt;Текст&lt;/p&gt;</code>.</p>
-                <textarea id="code-4" placeholder='<p style="color: purple;">Текст</p>'></textarea>
-                <button class="action-btn" onclick="checkTask4()">Проверить код</button>
-                <div id="fb-4" class="feedback"></div>
-                <div id="prev-4" class="preview"></div>
+    <!-- =================================================================
+         УРОК 4: ОСНОВЫ CSS И ОФОРМЛЕНИЕ
+         ================================================================= -->
+    <div class="lesson-page" id="lesson-3">
+        <div class="columns-grid">
+            <div class="panel">
+                <h1>Урок 4: Как CSS превращает текст в дизайн?</h1>
+                <p><strong>CSS</strong> (Cascading Style Sheets — каскадные таблицы стилей) отвечает за внешний вид: цвета, шрифты, рамки и отступы. Без CSS все сайты выглядели бы как чёрный текст на белом фоне.</p>
+
+                <!-- Встроенная SVG-картинка: Блочная модель CSS -->
+                <div class="illustration-box">
+                    <svg width="100%" height="130" viewBox="0 0 500 130">
+                        <rect x="30" y="8" width="440" height="114" rx="8" fill="#1b1436" stroke="#8b5cf6" stroke-dasharray="5,5" stroke-width="1.5"/>
+                        <text x="45" y="25" fill="#c4b5fd" font-size="11">Margin (Внешний отступ вокруг блока)</text>
+                        
+                        <rect x="75" y="33" width="350" height="78" rx="6" fill="#090614" stroke="#10b981" stroke-width="2"/>
+                        <text x="90" y="50" fill="#6ee7b7" font-size="11">Padding (Внутренний отступ до текста)</text>
+                        
+                        <rect x="120" y="58" width="260" height="40" rx="4" fill="#8b5cf6"/>
+                        <text x="195" y="83" fill="#ffffff" font-weight="bold" font-size="13">Контент (Текст)</text>
+                    </svg>
+                    <div class="illustration-caption">Устройство отступов в CSS (Box Model)</div>
+                </div>
+
+                <h2>Как задать стиль элементу?</h2>
+                <p>Самый быстрый способ — добавить атрибут <code>style="..."</code> прямо в тег. Свойства пишутся через двоеточие, а в конце ставится точка с запятой:</p>
+                <pre>&lt;p style="color: purple; font-size: 20px;"&gt;Фиолетовый текст&lt;/p&gt;</pre>
+            </div>
+
+            <div class="panel">
+                <div class="card-box">
+                    <h3>🛠 Практика: Раскрась текст с помощью CSS</h3>
+                    <p>Напиши абзац <code>&lt;p&gt;</code> и задай ему цвет текста с помощью атрибута <code>style="color: purple;"</code> (можно указать <code>red</code>, <code>blue</code> или <code>green</code>).</p>
+                    <textarea id="input-4" placeholder='<p style="color: purple;">Стильный текст</p>'></textarea>
+                    <button class="btn-primary" onclick="checkLesson4()">Проверить код</button>
+                    <div id="fb-4" class="feedback"></div>
+                    <div id="prev-4" class="live-preview"></div>
+                </div>
+
+                <div class="card-box">
+                    <h3>🧠 Мини-тест по Уроку 4</h3>
+                    <p>Какое CSS-свойство отвечает за изменение цвета текста?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-opt" onclick="checkQuiz(this, false, 'qfb-4', 'Ошибка: background-color меняет цвет фона блока, а не самих букв.')">А) background-color</div>
+                        <div class="quiz-opt" onclick="checkQuiz(this, true, 'qfb-4', 'Верно! Свойство color задаёт цвет текста элемента.')">Б) color</div>
+                        <div class="quiz-opt" onclick="checkQuiz(this, false, 'qfb-4', 'Ошибка: font-size отвечает за размер шрифта в пикселях.')">В) font-size</div>
+                    </div>
+                    <div id="qfb-4" class="feedback"></div>
+                </div>
             </div>
         </div>
-        <div class="bottom-nav">
-            <button class="action-btn" style="background: transparent; border: 1px solid var(--border);" onclick="openTab(2)">← Назад</button>
-            <button class="action-btn" onclick="openTab(4)">К Уроку 5 →</button>
+
+        <div class="footer-nav">
+            <button class="btn-outline" onclick="switchLesson(2)">← Урок 3</button>
+            <button class="btn-primary" onclick="switchLesson(4)">Перейти к Уроку 5 →</button>
         </div>
     </div>
 
-    <!-- УРОК 5 -->
-    <div class="lesson-section" id="tab-4">
-        <div>
-            <h1>Урок 5: Полезное видео и Итоговый Тест</h1>
-            <p>Обучающий ролик по основам HTML:</p>
-            <div class="video-wrapper">
-                <iframe src="https://www.youtube.com/embed/BJYqt7vvqbc" title="HTML Урок" allowfullscreen></iframe>
+    <!-- =================================================================
+         УРОК 5: ВИДЕОРАЗБОР И ИТОГОВЫЙ ЭКЗАМЕН
+         ================================================================= -->
+    <div class="lesson-page" id="lesson-4">
+        <div class="columns-grid">
+            <div class="panel">
+                <h1>Урок 5: Видеоразбор и закрепление</h1>
+                <p>Посмотри наглядный видеоурок по основам HTML, чтобы увидеть, как все изученные теги работают вместе в реальном редакторе кода.</p>
+                
+                <iframe src="https://www.youtube.com/embed/BJYqt7vvqbc" title="Обучающий видеоурок по HTML" allowfullscreen></iframe>
+
+                <h2>Шпаргалка выпускника:</h2>
+                <ul>
+                    <li><code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, <code>&lt;body&gt;</code> — обязательный каркас документа.</li>
+                    <li><code>&lt;h1&gt;</code> и <code>&lt;p&gt;</code> — заголовки и абзацы.</li>
+                    <li><code>&lt;ul&gt;&lt;li&gt;</code> и <code>&lt;a href="..."&gt;</code> — списки и ссылки.</li>
+                    <li><code>style="color: ...;"</code> — базовое оформление элементов.</li>
+                </ul>
             </div>
 
-            <h3 style="margin-top: 15px;">Проверь себя: Какой тег отвечает за главный заголовок?</h3>
-            <div class="quiz-option" onclick="checkQuiz(this, false)">А) &lt;p&gt;</div>
-            <div class="quiz-option" onclick="checkQuiz(this, true)">Б) &lt;h1&gt;</div>
-            <div class="quiz-option" onclick="checkQuiz(this, false)">В) &lt;a&gt;</div>
-            <div id="quiz-fb" style="font-weight: bold; margin-top: 5px; font-size: 13px;"></div>
+            <div class="panel">
+                <div class="card-box">
+                    <h3>🏆 Финальное задание: Собери мини-визитку</h3>
+                    <p>Объедини знания всех уроков! Напиши код, в котором есть:</p>
+                    <ul>
+                        <li>Заголовок <code>&lt;h1&gt;</code> с твоим именем или ником</li>
+                        <li>Абзац <code>&lt;p&gt;</code> с описанием</li>
+                        <li>Ссылка <code>&lt;a href="..."&gt;</code> на любой сайт</li>
+                    </ul>
+                    <textarea id="input-5" placeholder="<h1>Алекс</h1>&#10;<p>Я изучаю веб-разработку</p>&#10;<a href='https://github.com'>Мой GitHub</a>"></textarea>
+                    <button class="btn-primary" onclick="checkLesson5()">Завершить курс и проверить</button>
+                    <div id="fb-5" class="feedback"></div>
+                    <div id="prev-5" class="live-preview"></div>
+                </div>
+
+                <div class="card-box">
+                    <h3>🧠 Итоговый контрольный вопрос</h3>
+                    <p>Как правильно закрывается парный тег в HTML?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-opt" onclick="checkQuiz(this, false, 'qfb-5', 'Неверно. Без слэша браузер подумает, что вы открыли второй такой же тег.')">А) &lt;p&gt;</div>
+                        <div class="quiz-opt" onclick="checkQuiz(this, true, 'qfb-5', 'Блестяще! Прямой слэш перед именем тега указывает браузеру на закрытие элемента.')">Б) &lt;/p&gt;</div>
+                        <div class="quiz-opt" onclick="checkQuiz(this, false, 'qfb-5', 'Неверно. Слэш ставится перед названием тега, а не в конце.')">В) &lt;p/&gt;</div>
+                    </div>
+                    <div id="qfb-5" class="feedback"></div>
+                </div>
+            </div>
         </div>
-        <div class="bottom-nav">
-            <button class="action-btn" style="background: transparent; border: 1px solid var(--border);" onclick="openTab(3)">← Назад</button>
-            <button class="action-btn" onclick="openTab(0)">В начало ↺</button>
+
+        <div class="footer-nav">
+            <button class="btn-outline" onclick="switchLesson(3)">← Урок 4</button>
+            <button class="btn-primary" onclick="switchLesson(0)">Вернуться к Уроку 1 ↺</button>
         </div>
     </div>
 </div>
 
+<!-- =================================================================
+     JAVASCRIPT: ЛОГИКА ПЕРЕКЛЮЧЕНИЯ, ТЕСТОВ И АНАЛИЗА ОШИБОК
+     ================================================================= -->
 <script>
-    function openTab(index) {
-        const tabs = document.querySelectorAll('.lesson-section');
-        const btns = document.querySelectorAll('.nav-btn');
-        tabs.forEach(t => t.classList.remove('active'));
-        btns.forEach(b => b.classList.remove('active'));
-        tabs[index].classList.add('active');
-        btns[index].classList.add('active');
+    // 1. Функция переключения между уроками
+    function switchLesson(index) {
+        const pages = document.querySelectorAll('.lesson-page');
+        const buttons = document.querySelectorAll('.nav-btn');
+
+        pages.forEach(page => page.classList.remove('active'));
+        buttons.forEach(btn => btn.classList.remove('active'));
+
+        pages[index].classList.add('active');
+        buttons[index].classList.add('active');
     }
 
-    function checkTask2() {
-        const code = document.getElementById('code-2').value;
-        const fb = document.getElementById('fb-2');
-        const prev = document.getElementById('prev-2');
-        if (code.includes('<h1>') && code.includes('</h1>') && code.includes('<p>') && code.includes('</p>')) {
-            fb.className = 'feedback success'; fb.innerText = 'Верно!';
-            prev.style.display = 'block'; prev.innerHTML = code;
-        } else {
-            fb.className = 'feedback error'; fb.innerText = 'Ошибка: добавьте <h1> и <p>.';
-            prev.style.display = 'none';
-        }
-    }
+    // 2. Универсальная функция для проверки мини-тестов
+    function checkQuiz(clickedOption, isCorrect, feedbackId, explanationText) {
+        const fb = document.getElementById(feedbackId);
+        // Сбрасываем подсветку у соседних вариантов
+        const siblings = clickedOption.parentElement.querySelectorAll('.quiz-opt');
+        siblings.forEach(el => el.classList.remove('correct', 'wrong'));
 
-    function checkTask3() {
-        const code = document.getElementById('code-3').value;
-        const fb = document.getElementById('fb-3');
-        const prev = document.getElementById('prev-3');
-        if (code.includes('<ul>') && code.includes('<li>') && code.includes('<a')) {
-            fb.className = 'feedback success'; fb.innerText = 'Отлично!';
-            prev.style.display = 'block'; prev.innerHTML = code;
-        } else {
-            fb.className = 'feedback error'; fb.innerText = 'Ошибка: нужны теги <ul>, <li> и <a>.';
-            prev.style.display = 'none';
-        }
-    }
-
-    function checkTask4() {
-        const code = document.getElementById('code-4').value;
-        const fb = document.getElementById('fb-4');
-        const prev = document.getElementById('prev-4');
-        if (code.includes('<p') && code.includes('style=')) {
-            fb.className = 'feedback success'; fb.innerText = 'Правильно!';
-            prev.style.display = 'block'; prev.innerHTML = code;
-        } else {
-            fb.className = 'feedback error'; fb.innerText = 'Ошибка: используйте <p style="...">.';
-            prev.style.display = 'none';
-        }
-    }
-
-    function checkQuiz(element, isCorrect) {
-        const fb = document.getElementById('quiz-fb');
         if (isCorrect) {
-            element.classList.add('correct');
-            fb.style.color = 'var(--success)';
-            fb.innerText = 'Правильно! Тег <h1> задает главный заголовок.';
+            clickedOption.classList.add('correct');
+            fb.className = 'feedback success';
+            fb.innerText = '✅ ' + explanationText;
         } else {
-            element.classList.add('wrong');
-            fb.style.color = 'var(--error)';
-            fb.innerText = 'Неверно, попробуйте еще раз.';
+            clickedOption.classList.add('wrong');
+            fb.className = 'feedback error';
+            fb.innerText = '❌ ' + explanationText;
         }
+    }
+
+    // 3. Вспомогательная функция вывода результата проверки кода
+    function showResult(fbId, prevId, isSuccess, message, userCode) {
+        const fb = document.getElementById(fbId);
+        const prev = document.getElementById(prevId);
+
+        if (isSuccess) {
+            fb.className = 'feedback success';
+            fb.innerHTML = '✅ <strong>Отлично!</strong> ' + message;
+            prev.style.display = 'block';
+            prev.innerHTML = userCode;
+        } else {
+            fb.className = 'feedback error';
+            fb.innerHTML = '❌ <strong>Разбор ошибки:</strong> ' + message;
+            prev.style.display = 'none';
+        }
+    }
+
+    // Проверка Урока 1
+    function checkLesson1() {
+        const code = document.getElementById('input-1').value.trim();
+        const lower = code.toLowerCase();
+
+        if (!lower) {
+            return showResult('fb-1', 'prev-1', false, 'Поле пустое. Напишите теги <head> и <body>.');
+        }
+        if (!lower.includes('<head>') || !lower.includes('</head>')) {
+            return showResult('fb-1', 'prev-1', false, 'Не найден открывающий <head> или закрывающий </head> тег настроек.');
+        }
+        if (!lower.includes('<body>') || !lower.includes('</body>')) {
+            return showResult('fb-1', 'prev-1', false, 'Не найден открывающий <body> или закрывающий </body> тег тела страницы.');
+        }
+        showResult('fb-1', 'prev-1', true, 'Вы правильно собрали базовую структуру HTML-документа!', code);
+    }
+
+    // Проверка Урока 2
+    function checkLesson2() {
+        const code = document.getElementById('input-2').value.trim();
+        const lower = code.toLowerCase();
+
+        if (!lower.includes('<h1>')) {
+            return showResult('fb-2', 'prev-2', false, 'Вы забыли открыть главный заголовок тегом <h1>.');
+        }
+        if (!lower.includes('</h1>')) {
+            return showResult('fb-2', 'prev-2', false, 'Заголовок <h1> открыт, но не закрыт! Добавьте </h1> в конце заголовка.');
+        }
+        if (!lower.includes('<p>') || !lower.includes('</p>')) {
+            return showResult('fb-2', 'prev-2', false, 'Проверьте абзац: должен быть открывающий <p> и закрывающий </p>.');
+        }
+        showResult('fb-2', 'prev-2', true, 'Заголовок и абзац написаны без единой ошибки!', code);
+    }
+
+    // Проверка Урока 3
+    function checkLesson3() {
+        const code = document.getElementById('input-3').value.trim();
+        const lower = code.toLowerCase();
+
+        if (!lower.includes('<ul>') || !lower.includes('</ul>')) {
+            return showResult('fb-3', 'prev-3', false, 'Отсутствует контейнер списка <ul>...</ul>.');
+        }
+        if (!lower.includes('<li>') || !lower.includes('</li>')) {
+            return showResult('fb-3', 'prev-3', false, 'Внутри списка <ul> должен быть хотя бы один пункт <li>...</li>.');
+        }
+        if (!lower.includes('<a ') || !lower.includes('</a>')) {
+            return showResult('fb-3', 'prev-3', false, 'Не найден парный тег ссылки <a ...>...</a>.');
+        }
+        if (!lower.includes('href=')) {
+            return showResult('fb-3', 'prev-3', false, 'У тега <a> отсутствует обязательный атрибут href="адрес_сайта".');
+        }
+        showResult('fb-3', 'prev-3', true, 'Список и рабочая ссылка внутри него собраны правильно!', code);
+    }
+
+    // Проверка Урока 4
+    function checkLesson4() {
+        const code = document.getElementById('input-4').value.trim();
+        const lower = code.toLowerCase();
+
+        if (!lower.includes('<p')) {
+            return showResult('fb-4', 'prev-4', false, 'Используйте тег абзаца <p> для применения стиля.');
+        }
+        if (!lower.includes('style=')) {
+            return showResult('fb-4', 'prev-4', false, 'Вы не добавили атрибут style="..." внутрь открывающего тега <p>.');
+        }
+        if (!lower.includes('color:')) {
+            return showResult('fb-4', 'prev-4', false, 'Внутри style="..." укажите CSS-свойство color: (например, style="color: purple;").');
+        }
+        showResult('fb-4', 'prev-4', true, 'Стиль CSS успешно применён к тексту!', code);
+    }
+
+    // Проверка Урока 5
+    function checkLesson5() {
+        const code = document.getElementById('input-5').value.trim();
+        const lower = code.toLowerCase();
+
+        if (!lower.includes('<h1>') || !lower.includes('</h1>')) {
+            return showResult('fb-5', 'prev-5', false, 'В визитке не хватает главного заголовка <h1>...</h1>.');
+        }
+        if (!lower.includes('<p>') || !lower.includes('</p>')) {
+            return showResult('fb-5', 'prev-5', false, 'Добавьте абзац с описанием в тегах <p>...</p>.');
+        }
+        if (!lower.includes('<a') || !lower.includes('href=') || !lower.includes('</a>')) {
+            return showResult('fb-5', 'prev-5', false, 'Добавьте рабочую ссылку <a href="...">Текст</a>.');
+        }
+        showResult('fb-5', 'prev-5', true, 'Поздравляем! Вы успешно выполнили финальное задание курса!', code);
     }
 </script>
 
